@@ -1,7 +1,11 @@
+<<<<<<< HEAD
  import React, {
   useState,
   useEffect,
 } from 'react';
+=======
+import React, { useState, useEffect } from 'react';
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
 
 import MapView, {
   Marker,
@@ -15,6 +19,7 @@ import {
   ScrollView,
 } from 'react-native';
 
+<<<<<<< HEAD
 import axios from 'axios';
 
 export default function TrackingScreen() {
@@ -178,15 +183,172 @@ export default function TrackingScreen() {
 
 
   const eta =
+=======
+import { buses } from '../services/busData';
+
+export default function TrackingScreen() {
+
+  const [search, setSearch] = useState('');
+
+  const [selectedBus, setSelectedBus] =
+    useState(buses[0]);
+
+  const [currentIndex, setCurrentIndex] =
+    useState(
+      buses[0].currentStopIndex
+    );
+
+  // LIVE BUS POSITION
+
+  const [busPosition, setBusPosition] =
+    useState({
+      latitude:
+        buses[0].route[0].latitude,
+
+      longitude:
+        buses[0].route[0].longitude,
+    });
+
+  // SEARCH BUS
+
+  useEffect(() => {
+
+    if (search.trim() === '') {
+
+      setSelectedBus(buses[0]);
+
+      setCurrentIndex(
+        buses[0].currentStopIndex
+      );
+
+      setBusPosition({
+        latitude:
+          buses[0].route[0].latitude,
+
+        longitude:
+          buses[0].route[0].longitude,
+      });
+
+    } else {
+
+      const foundBus = buses.find((bus) =>
+        bus.number
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      );
+
+      if (foundBus) {
+
+        setSelectedBus(foundBus);
+
+        setCurrentIndex(
+          foundBus.currentStopIndex
+        );
+
+        setBusPosition({
+          latitude:
+            foundBus.route[0].latitude,
+
+          longitude:
+            foundBus.route[0].longitude,
+        });
+
+      }
+
+    }
+
+  }, [search]);
+
+  // REAL LIVE ROUTE MOVEMENT
+
+  useEffect(() => {
+
+    let pointIndex =
+      selectedBus.currentStopIndex;
+
+    const routePoints =
+      selectedBus.route;
+
+    const interval = setInterval(() => {
+
+      pointIndex++;
+
+      // LOOP ROUTE
+
+      if (
+        pointIndex >=
+        routePoints.length
+      ) {
+        pointIndex = 0;
+      }
+
+      const point =
+        routePoints[pointIndex];
+
+      // MOVE EXACTLY ON ROUTE
+
+      setBusPosition({
+        latitude: point.latitude,
+        longitude: point.longitude,
+      });
+
+      setCurrentIndex(pointIndex);
+
+    }, 2000);
+
+    return () => clearInterval(interval);
+
+  }, [selectedBus]);
+
+  // CURRENT STOP
+
+  const currentStop =
+    selectedBus.route[currentIndex];
+
+  // NEXT STOP
+
+  const nextStop =
+    selectedBus.route[
+      (currentIndex + 1)
+      % selectedBus.route.length
+    ];
+
+  // DYNAMIC ETA
+
+  const remainingStops =
+    selectedBus.route.length
+    - currentIndex
+    - 1;
+
+  let eta =
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
     Math.max(
       1,
       remainingStops * 2
     );
 
+<<<<<<< HEAD
 
 
   return (
 
+=======
+  // CROWD EFFECT
+
+  if (
+    currentStop.crowd === 'High'
+  ) {
+    eta += 2;
+  }
+
+  if (
+    currentStop.crowd === 'Very High'
+  ) {
+    eta += 4;
+  }
+
+  return (
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
     <View style={{ flex: 1 }}>
 
       {/* SEARCH */}
@@ -202,9 +364,13 @@ export default function TrackingScreen() {
       >
 
         <TextInput
+<<<<<<< HEAD
 
           placeholder="Search Bus Number..."
 
+=======
+          placeholder="Search Bus Number..."
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
           placeholderTextColor="#94a3b8"
 
           value={search}
@@ -222,13 +388,17 @@ export default function TrackingScreen() {
 
       </View>
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
       {/* MAP */}
 
       <MapView
         style={{ flex: 1 }}
 
+<<<<<<< HEAD
         showsTraffic={true}
 
         region={{
@@ -302,17 +472,106 @@ export default function TrackingScreen() {
           <Text
             style={{
               fontSize: 30,
+=======
+        initialRegion={{
+          latitude:
+            selectedBus.route[0].latitude,
+
+          longitude:
+            selectedBus.route[0].longitude,
+
+          latitudeDelta: 0.15,
+          longitudeDelta: 0.15,
+        }}
+      >
+
+        {/* ROUTE LINE */}
+        <Polyline
+          coordinates={selectedBus.route}
+          strokeColor={selectedBus.color}
+          strokeWidth={5}
+        />
+
+        {/* START */}
+
+        <Marker
+          coordinate={{
+            latitude:
+              selectedBus.route[0].latitude,
+
+            longitude:
+              selectedBus.route[0].longitude,
+          }}
+
+          title="Start"
+
+          description={
+            selectedBus.route[0].stop
+          }
+
+          pinColor="green"
+        />
+
+        {/* DESTINATION */}
+
+        <Marker
+          coordinate={{
+            latitude:
+              selectedBus.route[
+                selectedBus.route.length - 1
+              ].latitude,
+
+            longitude:
+              selectedBus.route[
+                selectedBus.route.length - 1
+              ].longitude,
+          }}
+
+          title="Destination"
+
+          description={
+            selectedBus.route[
+              selectedBus.route.length - 1
+            ].stop
+          }
+
+          pinColor="red"
+        />
+
+               {/* MOVING BUS */}
+
+        <Marker
+          coordinate={{
+            latitude: busPosition.latitude,
+            longitude: busPosition.longitude,
+          }}
+
+          title={`Bus ${selectedBus.number}`}
+          description={`Near ${currentStop.stop}`}
+
+          anchor={{ x: 0.5, y: 0.5 }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
             }}
           >
             🚌
           </Text>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
         </Marker>
 
       </MapView>
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
       {/* INFO CARD */}
 
       <ScrollView
@@ -321,13 +580,19 @@ export default function TrackingScreen() {
           bottom: 20,
           left: 20,
           right: 20,
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
           maxHeight: 320,
 
           backgroundColor: '#111827',
 
           borderRadius: 20,
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
           padding: 20,
         }}
       >
@@ -335,6 +600,7 @@ export default function TrackingScreen() {
         <Text
           style={{
             color: 'white',
+<<<<<<< HEAD
             fontSize: 28,
             fontWeight: 'bold',
           }}
@@ -344,6 +610,15 @@ export default function TrackingScreen() {
 
 
 
+=======
+            fontSize: 30,
+            fontWeight: 'bold',
+          }}
+        >
+          🚍 Bus {selectedBus.number}
+        </Text>
+
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
         <Text
           style={{
             color: '#22c55e',
@@ -351,6 +626,7 @@ export default function TrackingScreen() {
             fontSize: 18,
           }}
         >
+<<<<<<< HEAD
           ETA:
           {' '}
           {eta}
@@ -360,6 +636,11 @@ export default function TrackingScreen() {
 
 
 
+=======
+          ETA: {eta} mins
+        </Text>
+
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
         <Text
           style={{
             color: 'white',
@@ -372,8 +653,11 @@ export default function TrackingScreen() {
           {currentStop.stop}
         </Text>
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
         <Text
           style={{
             color: '#94a3b8',
@@ -386,22 +670,49 @@ export default function TrackingScreen() {
           {nextStop.stop}
         </Text>
 
+<<<<<<< HEAD
 
+=======
+        <Text
+          style={{
+            color: '#facc15',
+            marginTop: 8,
+            fontSize: 17,
+          }}
+        >
+          👥 Crowd:
+          {' '}
+          {currentStop.crowd}
+        </Text>
+
+        {/* ROUTE PROGRESS */}
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
 
         <Text
           style={{
             color: 'white',
+<<<<<<< HEAD
             marginTop: 18,
+=======
+            marginTop: 15,
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
             fontSize: 18,
             fontWeight: 'bold',
           }}
         >
+<<<<<<< HEAD
           Route Stops
         </Text>
 
 
 
         {route.map((stop, index) => {
+=======
+          Route Progress
+        </Text>
+
+        {selectedBus.route.map((stop, index) => {
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
 
           let color = '#6b7280';
 
@@ -409,24 +720,33 @@ export default function TrackingScreen() {
             color = '#22c55e';
           }
 
+<<<<<<< HEAD
           else if (
             index === currentIndex
           ) {
+=======
+          else if (index === currentIndex) {
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
             color = '#3b82f6';
           }
 
           return (
 
             <Text
+<<<<<<< HEAD
 
               key={index}
 
+=======
+              key={index}
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
               style={{
                 color,
                 marginTop: 8,
                 fontSize: 16,
               }}
             >
+<<<<<<< HEAD
 
               {index < currentIndex
                 ? '✅'
@@ -438,6 +758,16 @@ export default function TrackingScreen() {
 
               {stop.stop}
 
+=======
+              {index < currentIndex
+                ? '✅'
+                : index === currentIndex
+                ? '🚍'
+                : '⏳'}
+
+              {' '}
+              {stop.stop}
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
             </Text>
 
           );
@@ -447,7 +777,11 @@ export default function TrackingScreen() {
       </ScrollView>
 
     </View>
+<<<<<<< HEAD
 
   );
 
+=======
+  );
+>>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
 }

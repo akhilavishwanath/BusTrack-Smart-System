@@ -8,11 +8,8 @@ const csv = require('csv-parser');
 
 const app = express();
 
-<<<<<<< HEAD
 const path = require('path');
 
-=======
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
 app.use(cors());
 
 app.use(express.json());
@@ -111,7 +108,6 @@ app.get('/route/:id', (req, res) => {
 
 });
 
-<<<<<<< HEAD
     app.get('/fullroute/:busNumber', (req, res) => {
 
   const busNumber =
@@ -200,8 +196,6 @@ app.get('/route/:id', (req, res) => {
   );
 
 });
-=======
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
 
 // START SERVER
 
