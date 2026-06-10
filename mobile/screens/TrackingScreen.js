@@ -1,11 +1,7 @@
-<<<<<<< HEAD
  import React, {
   useState,
   useEffect,
 } from 'react';
-=======
-import React, { useState, useEffect } from 'react';
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
 
 import MapView, {
   Marker,
@@ -19,171 +15,6 @@ import {
   ScrollView,
 } from 'react-native';
 
-<<<<<<< HEAD
-import axios from 'axios';
-
-export default function TrackingScreen() {
-
-  const [search, setSearch] =
-    useState('127K');
-
-  const [route, setRoute] =
-    useState([]);
-
-  const [currentIndex, setCurrentIndex] =
-    useState(0);
-
-  const [busPosition, setBusPosition] =
-    useState(null);
-
-
-
-  // FETCH ROUTE FROM BACKEND
-
-  useEffect(() => {
-
-    if (!search.trim()) {
-      return;
-    }
-
-    const fetchRoute = async () => {
-
-      try {
-
-        const response =
-          await axios.get(
-            `http://192.168.31.160:3000/fullroute/${search}`
-          );
-
-        if (!response.data.length) {
-          return;
-        }
-
-        setRoute(response.data);
-
-        setCurrentIndex(0);
-
-        setBusPosition({
-
-          latitude:
-            response.data[0].latitude,
-
-          longitude:
-            response.data[0].longitude,
-
-        });
-
-      } catch (error) {
-
-        console.log(error);
-
-      }
-
-    };
-
-    fetchRoute();
-
-  }, [search]);
-
-
-
-  // LIVE BUS MOVEMENT
-
-  useEffect(() => {
-
-    if (route.length === 0) {
-      return;
-    }
-
-    let index = 0;
-
-    const interval = setInterval(() => {
-
-      index++;
-
-      if (index >= route.length) {
-
-        index = 0;
-
-      }
-
-      setCurrentIndex(index);
-
-      setBusPosition({
-
-        latitude:
-          route[index].latitude,
-
-        longitude:
-          route[index].longitude,
-
-      });
-
-    }, 2500);
-
-    return () => clearInterval(interval);
-
-  }, [route]);
-
-
-
-  // LOADING SCREEN
-
-  if (
-    route.length === 0 ||
-    !busPosition
-  ) {
-
-    return (
-
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'black',
-        }}
-      >
-
-        <Text
-          style={{
-            color: 'white',
-            fontSize: 22,
-          }}
-        >
-          Loading Bus Route...
-        </Text>
-
-      </View>
-
-    );
-
-  }
-
-
-
-  const currentStop =
-    route[currentIndex];
-
-
-
-  const nextStop =
-    route[
-      (currentIndex + 1)
-      % route.length
-    ];
-
-
-
-  const remainingStops =
-    route.length
-    - currentIndex
-    - 1;
-
-
-
-  const eta =
-=======
 import { buses } from '../services/busData';
 
 export default function TrackingScreen() {
@@ -321,18 +152,11 @@ export default function TrackingScreen() {
     - 1;
 
   let eta =
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
     Math.max(
       1,
       remainingStops * 2
     );
 
-<<<<<<< HEAD
-
-
-  return (
-
-=======
   // CROWD EFFECT
 
   if (
@@ -348,7 +172,6 @@ export default function TrackingScreen() {
   }
 
   return (
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
     <View style={{ flex: 1 }}>
 
       {/* SEARCH */}
@@ -364,13 +187,7 @@ export default function TrackingScreen() {
       >
 
         <TextInput
-<<<<<<< HEAD
-
           placeholder="Search Bus Number..."
-
-=======
-          placeholder="Search Bus Number..."
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
           placeholderTextColor="#94a3b8"
 
           value={search}
@@ -388,91 +205,11 @@ export default function TrackingScreen() {
 
       </View>
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
       {/* MAP */}
 
       <MapView
         style={{ flex: 1 }}
 
-<<<<<<< HEAD
-        showsTraffic={true}
-
-        region={{
-
-          latitude:
-            busPosition.latitude,
-
-          longitude:
-            busPosition.longitude,
-
-          latitudeDelta: 0.12,
-
-          longitudeDelta: 0.12,
-
-        }}
-      >
-
-        {/* ROUTE */}
-
-        <Polyline
-
-          coordinates={route}
-
-          strokeColor="#22c55e"
-
-          strokeWidth={6}
-
-        />
-
-
-
-        {/* ALL STOPS */}
-
-        {route.map((stop, index) => (
-
-          <Marker
-
-            key={index}
-
-            coordinate={{
-
-              latitude:
-                stop.latitude,
-
-              longitude:
-                stop.longitude,
-
-            }}
-
-            title={stop.stop}
-
-            pinColor="orange"
-          />
-
-        ))}
-
-
-
-        {/* LIVE BUS */}
-
-        <Marker
-
-          coordinate={busPosition}
-
-          title={`Bus ${search}`}
-
-          description={`Near ${currentStop.stop}`}
-
-        >
-
-          <Text
-            style={{
-              fontSize: 30,
-=======
         initialRegion={{
           latitude:
             selectedBus.route[0].latitude,
@@ -554,24 +291,14 @@ export default function TrackingScreen() {
           <Text
             style={{
               fontSize: 20,
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
             }}
           >
             🚌
           </Text>
-<<<<<<< HEAD
-
-=======
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
         </Marker>
 
       </MapView>
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
       {/* INFO CARD */}
 
       <ScrollView
@@ -580,19 +307,11 @@ export default function TrackingScreen() {
           bottom: 20,
           left: 20,
           right: 20,
-<<<<<<< HEAD
-
-=======
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
           maxHeight: 320,
 
           backgroundColor: '#111827',
 
           borderRadius: 20,
-<<<<<<< HEAD
-
-=======
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
           padding: 20,
         }}
       >
@@ -600,17 +319,6 @@ export default function TrackingScreen() {
         <Text
           style={{
             color: 'white',
-<<<<<<< HEAD
-            fontSize: 28,
-            fontWeight: 'bold',
-          }}
-        >
-          🚍 Bus {search}
-        </Text>
-
-
-
-=======
             fontSize: 30,
             fontWeight: 'bold',
           }}
@@ -618,7 +326,6 @@ export default function TrackingScreen() {
           🚍 Bus {selectedBus.number}
         </Text>
 
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
         <Text
           style={{
             color: '#22c55e',
@@ -626,21 +333,9 @@ export default function TrackingScreen() {
             fontSize: 18,
           }}
         >
-<<<<<<< HEAD
-          ETA:
-          {' '}
-          {eta}
-          {' '}
-          mins
-        </Text>
-
-
-
-=======
           ETA: {eta} mins
         </Text>
 
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
         <Text
           style={{
             color: 'white',
@@ -653,11 +348,6 @@ export default function TrackingScreen() {
           {currentStop.stop}
         </Text>
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
         <Text
           style={{
             color: '#94a3b8',
@@ -670,9 +360,6 @@ export default function TrackingScreen() {
           {nextStop.stop}
         </Text>
 
-<<<<<<< HEAD
-
-=======
         <Text
           style={{
             color: '#facc15',
@@ -686,33 +373,19 @@ export default function TrackingScreen() {
         </Text>
 
         {/* ROUTE PROGRESS */}
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
 
         <Text
           style={{
             color: 'white',
-<<<<<<< HEAD
-            marginTop: 18,
-=======
             marginTop: 15,
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
             fontSize: 18,
             fontWeight: 'bold',
           }}
         >
-<<<<<<< HEAD
-          Route Stops
-        </Text>
-
-
-
-        {route.map((stop, index) => {
-=======
           Route Progress
         </Text>
 
         {selectedBus.route.map((stop, index) => {
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
 
           let color = '#6b7280';
 
@@ -720,45 +393,20 @@ export default function TrackingScreen() {
             color = '#22c55e';
           }
 
-<<<<<<< HEAD
-          else if (
-            index === currentIndex
-          ) {
-=======
           else if (index === currentIndex) {
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
             color = '#3b82f6';
           }
 
           return (
 
             <Text
-<<<<<<< HEAD
-
               key={index}
-
-=======
-              key={index}
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
               style={{
                 color,
                 marginTop: 8,
                 fontSize: 16,
               }}
             >
-<<<<<<< HEAD
-
-              {index < currentIndex
-                ? '✅'
-                : index === currentIndex
-                ? '🚌'
-                : '⏳'}
-
-              {' '}
-
-              {stop.stop}
-
-=======
               {index < currentIndex
                 ? '✅'
                 : index === currentIndex
@@ -767,7 +415,6 @@ export default function TrackingScreen() {
 
               {' '}
               {stop.stop}
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
             </Text>
 
           );
@@ -777,11 +424,5 @@ export default function TrackingScreen() {
       </ScrollView>
 
     </View>
-<<<<<<< HEAD
-
   );
-
-=======
-  );
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
 }
