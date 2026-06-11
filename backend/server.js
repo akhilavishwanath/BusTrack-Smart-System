@@ -6,7 +6,7 @@ const csv = require('csv-parser');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || '127.0.0.1';
+const HOST = process.env.HOST || '0.0.0.0';
 const DATA_DIR = path.join(__dirname, 'data');
 const ROUTES_FILE = path.join(DATA_DIR, 'routes.csv');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
@@ -328,4 +328,5 @@ app.get('/users/:email', (req, res) => {
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running at http://${HOST}:${PORT}`);
+  console.log('Open http://YOUR_MAC_IP:3000/dashboard from your phone to test LAN access.');
 });

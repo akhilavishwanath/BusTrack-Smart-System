@@ -11,7 +11,7 @@ const host = debuggerHost?.split(':')?.[0];
 
 export const API_BASE_URL =
   process.env.EXPO_PUBLIC_API_URL ||
-  (Platform.OS === 'android' ? 'http://10.0.2.2:3000' : host ? `http://${host}:3000` : 'http://localhost:3000');
+  (host ? `http://${host}:3000` : Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000');
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
