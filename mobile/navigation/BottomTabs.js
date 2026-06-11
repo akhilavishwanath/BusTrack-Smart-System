@@ -8,10 +8,14 @@ import HomeScreen from '../screens/HomeScreen';
 import TrackingScreen from '../screens/TrackingScreen';
 import PredictionScreen from '../screens/PredictionScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import ChatbotScreen from '../screens/ChatbotScreen';
+import { useLanguage } from '../i18n/LanguageContext';
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabs() {
+  const { t } = useLanguage();
+
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -38,6 +42,8 @@ export default function BottomTabs() {
               iconName = 'analytics';
             } else if (route.name === 'Profile') {
               iconName = 'person';
+            } else if (route.name === 'Chatbot') {
+              iconName = 'chatbubble-ellipses';
             }
 
             return (
@@ -50,10 +56,11 @@ export default function BottomTabs() {
           },
         })}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Tracking" component={TrackingScreen} />
-        <Tab.Screen name="Prediction" component={PredictionScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen name="Home" component={HomeScreen} options={{ title: t('home') }} />
+        <Tab.Screen name="Tracking" component={TrackingScreen} options={{ title: t('tracking') }} />
+        <Tab.Screen name="Prediction" component={PredictionScreen} options={{ title: t('prediction') }} />
+        <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: t('profile') }} />
+        <Tab.Screen name="Chatbot" component={ChatbotScreen} options={{ title: t('chatbot') }} />
       </Tab.Navigator>
     </NavigationContainer>
   );

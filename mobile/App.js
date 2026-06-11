@@ -1,5 +1,10 @@
 import BottomTabs from './navigation/BottomTabs';
+import { LanguageProvider } from './i18n/LanguageContext';
 
 export default function App() {
-  return <BottomTabs />;
+  return (
+    <LanguageProvider>
+      <BottomTabs />
+    </LanguageProvider>
+  );
 }

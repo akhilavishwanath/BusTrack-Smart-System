@@ -1,428 +1,150 @@
- import React, {
-  useState,
-  useEffect,
-} from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { getFullRoute, searchRoutes } from '../services/api';
+import { useLanguage } from '../i18n/LanguageContext';
+import RouteMap from '../components/RouteMap';
 
-import MapView, {
-  Marker,
-  Polyline,
-} from 'react-native-maps';
-
-import {
-  View,
-  Text,
-  TextInput,
-  ScrollView,
-} from 'react-native';
-
-import { buses } from '../services/busData';
-
-export default function TrackingScreen() {
-
-  const [search, setSearch] = useState('');
-
-  const [selectedBus, setSelectedBus] =
-    useState(buses[0]);
-
-  const [currentIndex, setCurrentIndex] =
-    useState(
-      buses[0].currentStopIndex
-    );
-
-  // LIVE BUS POSITION
-
-  const [busPosition, setBusPosition] =
-    useState({
-      latitude:
-        buses[0].route[0].latitude,
-
-      longitude:
-        buses[0].route[0].longitude,
-    });
-
-  // SEARCH BUS
+export default function TrackingScreen({ route }) {
+  const { t } = useLanguage();
+  const initialBusNumber = route.params?.busNumber || '1C';
+  const [search, setSearch] = useState(initialBusNumber);
+  const [results, setResults] = useState([]);
+  const [selected, setSelected] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
+    setSearch(initialBusNumber);
+    loadRoute(initialBusNumber);
+  }, [initialBusNumber]);
 
-    if (search.trim() === '') {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      searchRoutes(search)
+        .then(setResults)
+        .catch(() => setResults([]));
+    }, 350);
 
-      setSelectedBus(buses[0]);
-
-      setCurrentIndex(
-        buses[0].currentStopIndex
-      );
-
-      setBusPosition({
-        latitude:
-          buses[0].route[0].latitude,
-
-        longitude:
-          buses[0].route[0].longitude,
-      });
-
-    } else {
-
-      const foundBus = buses.find((bus) =>
-        bus.number
-          .toLowerCase()
-          .includes(search.toLowerCase())
-      );
-
-      if (foundBus) {
-
-        setSelectedBus(foundBus);
-
-        setCurrentIndex(
-          foundBus.currentStopIndex
-        );
-
-        setBusPosition({
-          latitude:
-            foundBus.route[0].latitude,
-
-          longitude:
-            foundBus.route[0].longitude,
-        });
-
-      }
-
-    }
-
+    return () => clearTimeout(timer);
   }, [search]);
 
-  // REAL LIVE ROUTE MOVEMENT
-
   useEffect(() => {
-
-    let pointIndex =
-      selectedBus.currentStopIndex;
-
-    const routePoints =
-      selectedBus.route;
+    if (!selected?.stops?.length) return undefined;
 
     const interval = setInterval(() => {
-
-      pointIndex++;
-
-      // LOOP ROUTE
-
-      if (
-        pointIndex >=
-        routePoints.length
-      ) {
-        pointIndex = 0;
-      }
-
-      const point =
-        routePoints[pointIndex];
-
-      // MOVE EXACTLY ON ROUTE
-
-      setBusPosition({
-        latitude: point.latitude,
-        longitude: point.longitude,
-      });
-
-      setCurrentIndex(pointIndex);
-
-    }, 2000);
+      setCurrentIndex((index) => (index + 1) % selected.stops.length);
+    }, 2500);
 
     return () => clearInterval(interval);
+  }, [selected]);
 
-  }, [selectedBus]);
+  const currentStop = selected?.stops?.[currentIndex];
+  const nextStop = selected?.stops?.[(currentIndex + 1) % (selected?.stops?.length || 1)];
 
-  // CURRENT STOP
+  const region = useMemo(() => {
+    const first = selected?.stops?.[0];
 
-  const currentStop =
-    selectedBus.route[currentIndex];
+    return {
+      latitude: first?.latitude || 17.385,
+      longitude: first?.longitude || 78.4867,
+      latitudeDelta: 0.18,
+      longitudeDelta: 0.18,
+    };
+  }, [selected]);
 
-  // NEXT STOP
-
-  const nextStop =
-    selectedBus.route[
-      (currentIndex + 1)
-      % selectedBus.route.length
-    ];
-
-  // DYNAMIC ETA
-
-  const remainingStops =
-    selectedBus.route.length
-    - currentIndex
-    - 1;
-
-  let eta =
-    Math.max(
-      1,
-      remainingStops * 2
-    );
-
-  // CROWD EFFECT
-
-  if (
-    currentStop.crowd === 'High'
-  ) {
-    eta += 2;
-  }
-
-  if (
-    currentStop.crowd === 'Very High'
-  ) {
-    eta += 4;
+  function loadRoute(busNumber) {
+    setLoading(true);
+    setError('');
+    getFullRoute(busNumber)
+      .then((data) => {
+        setSelected(data);
+        setCurrentIndex(0);
+      })
+      .catch(() => setError('Unable to load this route. Check backend is running and try another bus number.'))
+      .finally(() => setLoading(false));
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
+      <RouteMap selected={selected} currentStop={currentStop} region={region} />
 
-      {/* SEARCH */}
-
-      <View
-        style={{
-          position: 'absolute',
-          top: 50,
-          left: 20,
-          right: 20,
-          zIndex: 10,
-        }}
-      >
-
+      <View style={styles.searchPanel}>
         <TextInput
-          placeholder="Search Bus Number..."
+          placeholder={t('searchBus')}
           placeholderTextColor="#94a3b8"
-
           value={search}
-
           onChangeText={setSearch}
-
-          style={{
-            backgroundColor: '#111827',
-            color: 'white',
-            padding: 15,
-            borderRadius: 18,
-            fontSize: 18,
-          }}
+          style={styles.input}
+          autoCapitalize="characters"
         />
-
+        {results.slice(0, 4).map((item) => (
+          <Pressable key={`${item.number}-${item.routeId}`} style={styles.result} onPress={() => loadRoute(item.number)}>
+            <Text style={styles.resultNumber}>{item.number}</Text>
+            <Text style={styles.resultText}>{item.originDestination}</Text>
+          </Pressable>
+        ))}
       </View>
 
-      {/* MAP */}
-
-      <MapView
-        style={{ flex: 1 }}
-
-        initialRegion={{
-          latitude:
-            selectedBus.route[0].latitude,
-
-          longitude:
-            selectedBus.route[0].longitude,
-
-          latitudeDelta: 0.15,
-          longitudeDelta: 0.15,
-        }}
-      >
-
-        {/* ROUTE LINE */}
-        <Polyline
-          coordinates={selectedBus.route}
-          strokeColor={selectedBus.color}
-          strokeWidth={5}
-        />
-
-        {/* START */}
-
-        <Marker
-          coordinate={{
-            latitude:
-              selectedBus.route[0].latitude,
-
-            longitude:
-              selectedBus.route[0].longitude,
-          }}
-
-          title="Start"
-
-          description={
-            selectedBus.route[0].stop
-          }
-
-          pinColor="green"
-        />
-
-        {/* DESTINATION */}
-
-        <Marker
-          coordinate={{
-            latitude:
-              selectedBus.route[
-                selectedBus.route.length - 1
-              ].latitude,
-
-            longitude:
-              selectedBus.route[
-                selectedBus.route.length - 1
-              ].longitude,
-          }}
-
-          title="Destination"
-
-          description={
-            selectedBus.route[
-              selectedBus.route.length - 1
-            ].stop
-          }
-
-          pinColor="red"
-        />
-
-               {/* MOVING BUS */}
-
-        <Marker
-          coordinate={{
-            latitude: busPosition.latitude,
-            longitude: busPosition.longitude,
-          }}
-
-          title={`Bus ${selectedBus.number}`}
-          description={`Near ${currentStop.stop}`}
-
-          anchor={{ x: 0.5, y: 0.5 }}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-            }}
-          >
-            🚌
-          </Text>
-        </Marker>
-
-      </MapView>
-
-      {/* INFO CARD */}
-
-      <ScrollView
-        style={{
-          position: 'absolute',
-          bottom: 20,
-          left: 20,
-          right: 20,
-          maxHeight: 320,
-
-          backgroundColor: '#111827',
-
-          borderRadius: 20,
-          padding: 20,
-        }}
-      >
-
-        <Text
-          style={{
-            color: 'white',
-            fontSize: 30,
-            fontWeight: 'bold',
-          }}
-        >
-          🚍 Bus {selectedBus.number}
-        </Text>
-
-        <Text
-          style={{
-            color: '#22c55e',
-            marginTop: 10,
-            fontSize: 18,
-          }}
-        >
-          ETA: {eta} mins
-        </Text>
-
-        <Text
-          style={{
-            color: 'white',
-            marginTop: 10,
-            fontSize: 17,
-          }}
-        >
-          📍 Current Stop:
-          {' '}
-          {currentStop.stop}
-        </Text>
-
-        <Text
-          style={{
-            color: '#94a3b8',
-            marginTop: 8,
-            fontSize: 16,
-          }}
-        >
-          ➡️ Next Stop:
-          {' '}
-          {nextStop.stop}
-        </Text>
-
-        <Text
-          style={{
-            color: '#facc15',
-            marginTop: 8,
-            fontSize: 17,
-          }}
-        >
-          👥 Crowd:
-          {' '}
-          {currentStop.crowd}
-        </Text>
-
-        {/* ROUTE PROGRESS */}
-
-        <Text
-          style={{
-            color: 'white',
-            marginTop: 15,
-            fontSize: 18,
-            fontWeight: 'bold',
-          }}
-        >
-          Route Progress
-        </Text>
-
-        {selectedBus.route.map((stop, index) => {
-
-          let color = '#6b7280';
-
-          if (index < currentIndex) {
-            color = '#22c55e';
-          }
-
-          else if (index === currentIndex) {
-            color = '#3b82f6';
-          }
-
-          return (
-
-            <Text
-              key={index}
-              style={{
-                color,
-                marginTop: 8,
-                fontSize: 16,
-              }}
-            >
-              {index < currentIndex
-                ? '✅'
-                : index === currentIndex
-                ? '🚍'
-                : '⏳'}
-
-              {' '}
-              {stop.stop}
-            </Text>
-
-          );
-
-        })}
-
-      </ScrollView>
-
+      <View style={styles.infoCard}>
+        {loading ? <ActivityIndicator color="#2dd4bf" /> : null}
+        {error ? <Text style={styles.error}>{error}</Text> : null}
+        {selected?.bus && currentStop ? (
+          <>
+            <Text style={styles.busTitle}>Bus {selected.bus.number}</Text>
+            <Text style={styles.routeText}>{selected.bus.originDestination}</Text>
+            <View style={styles.row}>
+              <Info label="ETA" value={`${currentStop.etaMinutes} min`} />
+              <Info label={t('crowd')} value={currentStop.crowd} />
+              <Info label={t('next')} value={nextStop?.stop || '-'} />
+            </View>
+            <Text style={styles.stopTitle}>{t('routeProgress')}</Text>
+            {selected.stops.map((stop, index) => (
+              <Text key={`${stop.stop}-${index}`} style={[styles.stop, index === currentIndex && styles.activeStop]}>
+                {index <= currentIndex ? '•' : '○'} {stop.stop}
+              </Text>
+            ))}
+          </>
+        ) : null}
+      </View>
     </View>
   );
 }
+
+function Info({ label, value }) {
+  return (
+    <View style={styles.info}>
+      <Text style={styles.infoValue}>{value}</Text>
+      <Text style={styles.infoLabel}>{label}</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#07111f' },
+  searchPanel: { position: 'absolute', top: 48, left: 16, right: 16, gap: 8 },
+  input: { backgroundColor: '#101c2e', color: '#f8fafc', borderRadius: 8, padding: 14, fontSize: 16 },
+  result: { backgroundColor: '#17233a', borderRadius: 8, padding: 10 },
+  resultNumber: { color: '#f8fafc', fontWeight: '800' },
+  resultText: { color: '#9ca3af', marginTop: 2 },
+  infoCard: {
+    position: 'absolute',
+    left: 16,
+    right: 16,
+    bottom: 88,
+    maxHeight: 330,
+    backgroundColor: '#101c2e',
+    borderRadius: 8,
+    padding: 16,
+  },
+  error: { color: '#fecaca' },
+  busTitle: { color: '#f8fafc', fontSize: 24, fontWeight: '800' },
+  routeText: { color: '#9ca3af', marginTop: 4 },
+  row: { flexDirection: 'row', gap: 8, marginTop: 14 },
+  info: { flex: 1, backgroundColor: '#07111f', borderRadius: 8, padding: 10 },
+  infoValue: { color: '#5eead4', fontWeight: '800' },
+  infoLabel: { color: '#94a3b8', fontSize: 12, marginTop: 3 },
+  stopTitle: { color: '#f8fafc', fontWeight: '800', marginTop: 14 },
+  stop: { color: '#94a3b8', marginTop: 5 },
+  activeStop: { color: '#5eead4', fontWeight: '800' },
+});

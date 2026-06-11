@@ -1,12 +1,15 @@
 {
+  "name": "bustrack-smart",
+  "private": true,
+  "scripts": {
+    "backend": "npm --prefix backend start",
+    "mobile": "npm --prefix mobile start",
+    "website": "npm --prefix website run dev"
+  },
   "dependencies": {
-<<<<<<< HEAD
     "@react-navigation/native": "^7.3.0",
     "axios": "^1.17.0",
     "expo": "^54.0.35",
     "react-native-maps": "1.20.1"
-=======
-    "@react-navigation/native": "^7.3.0"
->>>>>>> 6ab285dc7898e52dce96354c75e0bc66a90a4f40
   }
 }

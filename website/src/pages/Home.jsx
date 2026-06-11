@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
+import Dashboard from '../components/Dashboard';
 import Features from '../components/Features';
 import Screenshots from '../components/Screenshots';
 import HowItWorks from '../components/HowItWorks';
@@ -15,6 +16,7 @@ function Home() {
     <>
       <Navbar />
       <Hero />
+      <Dashboard />
       <Features />
       <Screenshots />
       <HowItWorks />
