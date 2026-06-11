@@ -1,4 +1,4 @@
- import React, {
+import React, {
   useState,
   useEffect,
 } from 'react';
@@ -47,8 +47,10 @@ export default function TrackingScreen() {
 
         const response =
           await axios.get(
-            `http://192.168.31.160:3000/fullroute/${search}`
+            'http://192.168.106.177:3000/fullroute/${search}'
           );
+
+        console.log(response.data);
 
         if (!response.data.length) {
           return;
@@ -124,10 +126,7 @@ export default function TrackingScreen() {
 
   // LOADING SCREEN
 
-  if (
-    route.length === 0 ||
-    !busPosition
-  ) {
+  if (!busPosition) {
 
     return (
 
@@ -250,7 +249,12 @@ export default function TrackingScreen() {
 
         <Polyline
 
-          coordinates={route}
+          coordinates={
+            route.map((stop) => ({
+              latitude: stop.latitude,
+              longitude: stop.longitude,
+            }))
+          }
 
           strokeColor="#22c55e"
 
@@ -390,13 +394,29 @@ export default function TrackingScreen() {
 
         <Text
           style={{
+            color: '#facc15',
+            marginTop: 8,
+            fontSize: 17,
+          }}
+        >
+          👥 Crowd:
+          {' '}
+          {currentStop.crowd || 'Medium'}
+        </Text>
+
+
+
+        {/* ROUTE PROGRESS */}
+
+        <Text
+          style={{
             color: 'white',
-            marginTop: 18,
+            marginTop: 15,
             fontSize: 18,
             fontWeight: 'bold',
           }}
         >
-          Route Stops
+          Route Progress
         </Text>
 
 
@@ -418,9 +438,7 @@ export default function TrackingScreen() {
           return (
 
             <Text
-
               key={index}
-
               style={{
                 color,
                 marginTop: 8,
