@@ -1,13 +1,12 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
 import { Ionicons } from '@expo/vector-icons';
 
-import HomeScreen from '../screens/HomeScreen';
-import TrackingScreen from '../screens/TrackingScreen';
-import PredictionScreen from '../screens/PredictionScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import HomeScreen from '../app/(tabs)/index';
+import TrackingScreen from '../app/tracking';
+import PredictionScreen from '../app/prediction';
+import ProfileScreen from '../app/profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +18,7 @@ export default function BottomTabs() {
           headerShown: false,
 
           tabBarStyle: {
-            backgroundColor: '#111827',
+            backgroundColor: '#0f172a',
             borderTopWidth: 0,
             height: 65,
           },

@@ -1,0 +1,13 @@
+{
+  "users": [
+    {
+      "id": "user_1781166712744",
+      "name": "Hyderabad Passenger",
+      "email": "passenger@bustrack.local",
+      "phone": "9999999999",
+      "role": "passenger",
+      "lastLoginAt": "2026-06-11T08:40:59.535Z",
+      "createdAt": "2026-06-11T08:31:52.744Z"
+    }
+  ]
+}
