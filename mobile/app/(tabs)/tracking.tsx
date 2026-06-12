@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 
- import {
+import {
   View,
   Text,
   StyleSheet,
@@ -9,47 +12,143 @@ import React, { useEffect, useState } from 'react';
   Pressable,
 } from 'react-native';
 
-import { getRoutes } from '../../services/api';
-import { router } from 'expo-router';
+import {
+  getRoutes,
+  getFullRoute,
+} from '../../services/api';
+
+import {
+  router,
+} from 'expo-router';
 
 export default function TrackingScreen() {
-  const [routes, setRoutes] = useState<any[]>([]);
-  const [search, setSearch] = useState('');
+
+  const [routes, setRoutes] =
+    useState<any[]>([]);
+
+  const [search, setSearch] =
+    useState('');
+
+  // LOAD VALID ROUTES
 
   useEffect(() => {
-    getRoutes()
-      .then((data: any[]) => {
-        setRoutes(data);
-      })
-      .catch((error: any) => {
+
+    const loadRoutes = async () => {
+
+      try {
+
+        const data =
+          await getRoutes();
+
+        const validRoutes = [];
+
+        for (const route of data) {
+
+          try {
+
+            const routeData =
+              await getFullRoute(
+                route.number || route.route
+              );
+
+            const validStops =
+              (routeData.stops || []).filter(
+
+                (s: any) => {
+
+                  const lat =
+                    Number(s.latitude);
+
+                  const lng =
+                    Number(s.longitude);
+
+                  return (
+
+                    !isNaN(lat) &&
+                    !isNaN(lng) &&
+                    lat !== 0 &&
+                    lng !== 0
+
+                  );
+
+                }
+
+              );
+
+            // ONLY KEEP VALID ROUTES
+
+            if (
+              validStops.length >= 2
+            ) {
+
+              validRoutes.push(route);
+
+            }
+
+          } catch (err) {
+
+            console.log(
+              'INVALID ROUTE',
+              route.number
+            );
+
+          }
+
+        }
+
+        setRoutes(validRoutes);
+
+      } catch (error) {
+
         console.log(error);
-      });
+
+      }
+
+    };
+
+    loadRoutes();
+
   }, []);
 
-  const filteredRoutes = routes.filter((route: any) => {
-    const routeName =
-      route.route ||
-      route.number ||
-      '';
+  // SEARCH FILTER
 
-    const destination =
-      route.origin_destination ||
-      route.originDestination ||
-      '';
+  const filteredRoutes =
+    routes.filter(
+      (route: any) => {
 
-    return (
-      routeName
-        .toLowerCase()
-        .includes(search.toLowerCase()) ||
+        const routeName =
+          route.route ||
+          route.number ||
+          '';
 
-      destination
-        .toLowerCase()
-        .includes(search.toLowerCase())
+        const destination =
+          route.origin_destination ||
+          route.originDestination ||
+          '';
+
+        return (
+
+          routeName
+            .toLowerCase()
+            .includes(
+              search.toLowerCase()
+            ) ||
+
+          destination
+            .toLowerCase()
+            .includes(
+              search.toLowerCase()
+            )
+
+        );
+
+      }
     );
-  });
 
   return (
+
     <ScrollView style={styles.container}>
+
       <Text style={styles.title}>
         📍 Live Bus Tracking
       </Text>
@@ -62,34 +161,62 @@ export default function TrackingScreen() {
         style={styles.search}
       />
 
-      {filteredRoutes.map((route: any, index: number) => (
-       <Pressable
-          key={index}
-          style={styles.card}
-           onPress={() => router.push({
-            pathname: '/map',
-            params: {
-            bus: route.route || route.number,
-        },
-    })}
-      >
-       <Text style={styles.busNumber}>
-          🚌 {route.route || route.number}
-      </Text>
-
-      <Text style={styles.route}>
       {
-      route.origin_destination ||
-      route.originDestination
-     }
-       </Text>
-      </Pressable>
-      ))}
+        filteredRoutes.map(
+          (
+            route: any,
+            index: number
+          ) => (
+
+            <Pressable
+              key={index}
+              style={styles.card}
+
+              onPress={() =>
+
+                router.push({
+
+                  pathname: '/map',
+
+                  params: {
+                    bus:
+                      route.route ||
+                      route.number,
+                  },
+
+                })
+
+              }
+            >
+
+              <Text style={styles.busNumber}>
+                🚌 {
+                  route.route ||
+                  route.number
+                }
+              </Text>
+
+              <Text style={styles.route}>
+                {
+                  route.origin_destination ||
+                  route.originDestination
+                }
+              </Text>
+
+            </Pressable>
+
+          )
+        )
+      }
+
     </ScrollView>
+
   );
+
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     backgroundColor: '#020617',
@@ -131,4 +258,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
   },
+
 });
