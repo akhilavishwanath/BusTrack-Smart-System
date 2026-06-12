@@ -7,13 +7,15 @@ import React, {
 
 import {
   View,
-  Text,
+ Text,
   StyleSheet,
   Platform,
+  Pressable,
 } from 'react-native';
 
 import {
   useLocalSearchParams,
+  router,
 } from 'expo-router';
 
 import {
@@ -42,6 +44,8 @@ export default function MapScreen() {
   const [currentIndex, setCurrentIndex] =
     useState(0);
 
+  // LOAD ROUTE
+
   useEffect(() => {
 
     if (!bus) return;
@@ -50,190 +54,250 @@ export default function MapScreen() {
 
       .then((data) => {
 
-        const cleanStops =
-          (data.stops || []).filter(
+        try {
 
-            (s: any) =>
+          const cleanStops =
+            (data.stops || []).filter(
 
-              typeof s.latitude === 'number' &&
-              typeof s.longitude === 'number' &&
-              !isNaN(s.latitude) &&
-              !isNaN(s.longitude)
+              (s: any) => {
 
-          );
+                const lat =
+                  Number(s.latitude);
 
-        setStops(cleanStops);
+                const lng =
+                  Number(s.longitude);
 
-        if (
-          cleanStops.length === 0
-        ) return;
+                return (
 
-        const polyline =
-          JSON.stringify(
+                  !isNaN(lat) &&
+                  !isNaN(lng) &&
+                  lat !== 0 &&
+                  lng !== 0 &&
+                  lat > 10 &&
+                  lng > 10
 
-            cleanStops.map(
-              (s: any) => [
-                s.latitude,
-                s.longitude
-              ]
-            )
-
-          );
-
-        const stopNames =
-          JSON.stringify(
-
-            cleanStops.map(
-              (s: any) => s.stop
-            )
-
-          );
-
-        const generatedHtml = `
-        <!DOCTYPE html>
-
-        <html>
-
-        <head>
-
-          <meta charset="utf-8" />
-
-          <link
-            rel="stylesheet"
-            href="https://unpkg.com/leaflet/dist/leaflet.css"
-          />
-
-          <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-          <style>
-
-            html,
-            body,
-            #map {
-
-              height: 100%;
-              margin: 0;
-
-            }
-
-          </style>
-
-        </head>
-
-        <body>
-
-          <div id="map"></div>
-
-          <script>
-
-            const stops =
-              ${polyline};
-
-            const stopNames =
-              ${stopNames};
-
-            const map =
-              L.map('map')
-                .setView(
-                  stops[0],
-                  12
                 );
 
-            L.tileLayer(
-              'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-              {
-                attribution:
-                  'OpenStreetMap'
               }
-            ).addTo(map);
 
-            // ROUTE LINE
+            );
 
-            L.polyline(
-              stops,
-              {
-                color: '#22c55e',
-                weight: 6
+          setStops(cleanStops);
+
+          // INVALID ROUTE
+
+          if (
+            cleanStops.length < 2
+          ) {
+
+            setHtml('');
+
+            return;
+
+          }
+
+          const polyline =
+            JSON.stringify(
+
+              cleanStops.map(
+                (s: any) => [
+
+                  Number(s.latitude),
+                  Number(s.longitude)
+
+                ]
+              )
+
+            );
+
+          const stopNames =
+            JSON.stringify(
+
+              cleanStops.map(
+                (s: any) =>
+
+                  String(
+                    s.stop || 'Stop'
+                  )
+
+              )
+
+            );
+
+          const generatedHtml = `
+          <!DOCTYPE html>
+
+          <html>
+
+          <head>
+
+            <meta charset="utf-8" />
+
+            <link
+              rel="stylesheet"
+              href="https://unpkg.com/leaflet/dist/leaflet.css"
+            />
+
+            <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+            <style>
+
+              html,
+              body,
+              #map {
+
+                height: 100%;
+                margin: 0;
+
               }
-            ).addTo(map);
 
-            // STOP MARKERS
+            </style>
 
-            stops.forEach(
-              (stop, index) => {
+          </head>
 
-                L.circleMarker(
-                  stop,
+          <body>
+
+            <div id="map"></div>
+
+            <script>
+
+              try {
+
+                const stops =
+                  ${polyline};
+
+                const stopNames =
+                  ${stopNames};
+
+                const map =
+                  L.map('map')
+                    .setView(
+                      stops[0],
+                      12
+                    );
+
+                L.tileLayer(
+                  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                   {
-                    radius: 5,
-                    color: '#2563eb',
-                    fillColor: '#2563eb',
-                    fillOpacity: 1
+                    attribution:
+                      'OpenStreetMap'
                   }
-                )
-                .addTo(map)
-                .bindPopup(
-                  stopNames[index]
+                ).addTo(map);
+
+                // ROUTE LINE
+
+                L.polyline(
+                  stops,
+                  {
+                    color: '#22c55e',
+                    weight: 6
+                  }
+                ).addTo(map);
+
+                // STOPS
+
+                stops.forEach(
+                  (stop, index) => {
+
+                    L.circleMarker(
+                      stop,
+                      {
+                        radius: 5,
+                        color: '#2563eb',
+                        fillColor: '#2563eb',
+                        fillOpacity: 1
+                      }
+                    )
+                    .addTo(map)
+                    .bindPopup(
+                      stopNames[index]
+                    );
+
+                  }
                 );
 
-              }
-            );
+                // BUS ICON
 
-            // BUS ICON
+                const busIcon =
+                  L.icon({
 
-            const busIcon =
-              L.icon({
+                    iconUrl:
+                      'https://cdn-icons-png.flaticon.com/512/3448/3448339.png',
 
-                iconUrl:
-                  'https://cdn-icons-png.flaticon.com/512/3448/3448339.png',
+                    iconSize:
+                      [40, 40]
 
-                iconSize:
-                  [40, 40]
+                  });
 
-              });
+                let currentIndex = 0;
 
-            let currentIndex = 0;
+                const marker =
+                  L.marker(
+                    stops[currentIndex],
+                    {
+                      icon: busIcon
+                    }
+                  ).addTo(map);
 
-            const marker =
-              L.marker(
-                stops[currentIndex],
-                {
-                  icon: busIcon
+                function moveBus() {
+
+                  currentIndex++;
+
+                  if (
+                    currentIndex >=
+                    stops.length
+                  ) {
+
+                    currentIndex = 0;
+
+                  }
+
+                  marker.setLatLng(
+                    stops[currentIndex]
+                  );
+
                 }
-              ).addTo(map);
 
-            function moveBus() {
+                setInterval(
+                  moveBus,
+                  3000
+                );
 
-              currentIndex++;
+              } catch (e) {
 
-              if (
-                currentIndex >=
-                stops.length
-              ) {
-
-                currentIndex = 0;
+                document.body.innerHTML =
+                  '<h2 style="color:red;padding:20px;">Invalid Route Data</h2>';
 
               }
 
-              marker.setLatLng(
-                stops[currentIndex]
-              );
+            </script>
 
-            }
+          </body>
 
-            setInterval(
-              moveBus,
-              3000
-            );
+          </html>
+          `;
 
-          </script>
+          setHtml(generatedHtml);
 
-        </body>
+        } catch (err) {
 
-        </html>
-        `;
+          console.log(
+            'MAP ERROR',
+            err
+          );
 
-        setHtml(generatedHtml);
+          setHtml('');
+
+        }
+
+      })
+
+      .catch((err) => {
+
+        console.log(
+          'FETCH ERROR',
+          err
+        );
 
       });
 
@@ -317,6 +381,19 @@ export default function MapScreen() {
 
     <View style={styles.container}>
 
+      {/* BACK BUTTON */}
+
+      <Pressable
+        style={styles.backButton}
+        onPress={() => router.back()}
+      >
+
+        <Text style={styles.backText}>
+          ← Back
+        </Text>
+
+      </Pressable>
+
       {/* HEADER */}
 
       <View style={styles.headerBox}>
@@ -367,7 +444,7 @@ export default function MapScreen() {
           ) : (
 
             <Text style={styles.loading}>
-              Loading Map...
+              Invalid Route Data
             </Text>
 
           )
@@ -375,7 +452,7 @@ export default function MapScreen() {
 
       </View>
 
-      {/* INFO CARD */}
+      {/* INFO BOX */}
 
       <View style={styles.infoBox}>
 
@@ -436,10 +513,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#020617',
   },
 
+  backButton: {
+    marginTop: 45,
+    marginLeft: 20,
+  },
+
+  backText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+
   headerBox: {
     width: '90%',
     alignSelf: 'center',
-    marginTop: 20,
+    marginTop: 10,
   },
 
   busTitle: {
@@ -496,6 +584,9 @@ const styles = StyleSheet.create({
   loading: {
     color: 'white',
     padding: 20,
+    textAlign: 'center',
+    marginTop: 120,
+    fontSize: 18,
   },
 
 });
