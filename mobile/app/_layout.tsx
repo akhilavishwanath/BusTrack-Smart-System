@@ -17,6 +17,9 @@ import 'react-native-reanimated';
 import {
   useColorScheme,
 } from '../hooks/use-color-scheme';
+import {
+  LanguageProvider,
+} from '../context/LanguageContext';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -28,6 +31,8 @@ export default function RootLayout() {
     useColorScheme();
 
   return (
+
+  <LanguageProvider>
 
     <ThemeProvider
       value={
@@ -67,6 +72,7 @@ export default function RootLayout() {
 
     </ThemeProvider>
 
-  );
+  </LanguageProvider>
 
+);
 }

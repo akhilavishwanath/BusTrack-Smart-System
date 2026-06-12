@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+  useContext,
+} from 'react';
+
 import {
   View,
   Text,
@@ -7,64 +11,107 @@ import {
   ScrollView,
 } from 'react-native';
 
+import translations from '../../constants/language';
+
+import {
+  LanguageContext,
+} from '../../context/LanguageContext';
+
 export default function HomeScreen() {
+
+  const {
+    currentLanguage,
+  } = useContext(
+    LanguageContext
+  );
+
+  const t =
+    currentLanguage === 'telugu'
+      ? translations.telugu
+      : currentLanguage === 'hindi'
+      ? translations.hindi
+      : currentLanguage === 'urdu'
+      ? translations.urdu
+      : translations.english;
+
   const [dashboard] = useState({
     activeBuses: 128,
     totalRoutes: 524,
     averageEtaMinutes: 23,
+
     featuredRoutes: [
+
       {
         number: '1C',
-        originDestination: 'CBS TO SECUNDERABAD',
+        originDestination:
+          'CBS TO SECUNDERABAD',
         crowd: 'High',
         etaMinutes: 8,
       },
+
       {
         number: '1D',
-        originDestination: 'CHILKALGUDA TO DILSUKH NAGAR',
+        originDestination:
+          'CHILKALGUDA TO DILSUKH NAGAR',
         crowd: 'Medium',
         etaMinutes: 11,
       },
+
     ],
+
   });
 
   return (
+
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>🚌 BusTrack Smart</Text>
+
+      <Text style={styles.title}>
+        🚌 BusTrack Smart
+      </Text>
 
       <Text style={styles.subtitle}>
         Smart Hyderabad Bus Tracking System
       </Text>
 
       <View style={styles.statsBox}>
+
         <Text style={styles.info}>
-          🚍 Active Buses: {dashboard.activeBuses}
+          🚍 Active Buses:
+          {' '}
+          {dashboard.activeBuses}
         </Text>
 
         <Text style={styles.info}>
-          🛣 Total Routes: {dashboard.totalRoutes}
+          🛣 Total Routes:
+          {' '}
+          {dashboard.totalRoutes}
         </Text>
 
         <Text style={styles.info}>
-          ⏱ Avg ETA: {dashboard.averageEtaMinutes} mins
+          ⏱ Avg ETA:
+          {' '}
+          {dashboard.averageEtaMinutes}
+          {' '}
+          mins
         </Text>
+
       </View>
 
       <Pressable style={styles.card}>
         <Text style={styles.cardText}>
-          📍 Live Bus Tracking
+          📍 {t.liveTracking}
         </Text>
       </Pressable>
 
       <Pressable style={styles.card}>
         <Text style={styles.cardText}>
-          🤖 AI Chatbot
+          🤖 {t.chatbot}
         </Text>
       </Pressable>
 
       <Pressable style={styles.card}>
         <Text style={styles.cardText}>
-          📊 Crowd Prediction
+          📊 {t.crowdPrediction}
         </Text>
       </Pressable>
 
@@ -75,33 +122,56 @@ export default function HomeScreen() {
       </Pressable>
 
       <Text style={styles.sectionTitle}>
-        Featured Routes
+        {t.featuredRoutes}
       </Text>
 
-      {dashboard.featuredRoutes.map((route, index) => (
-        <View key={index} style={styles.routeCard}>
-          <Text style={styles.routeNumber}>
-            {route.number}
-          </Text>
+      {
 
-          <Text style={styles.routeText}>
-            {route.originDestination}
-          </Text>
+        dashboard.featuredRoutes.map(
+          (route, index) => (
 
-          <Text style={styles.routeInfo}>
-            Crowd: {route.crowd}
-          </Text>
+            <View
+              key={index}
+              style={styles.routeCard}
+            >
 
-          <Text style={styles.routeInfo}>
-            ETA: {route.etaMinutes} mins
-          </Text>
-        </View>
-      ))}
+              <Text style={styles.routeNumber}>
+                {route.number}
+              </Text>
+
+              <Text style={styles.routeText}>
+                {route.originDestination}
+              </Text>
+
+              <Text style={styles.routeInfo}>
+                Crowd:
+                {' '}
+                {route.crowd}
+              </Text>
+
+              <Text style={styles.routeInfo}>
+                ETA:
+                {' '}
+                {route.etaMinutes}
+                {' '}
+                mins
+              </Text>
+
+            </View>
+
+          )
+        )
+
+      }
+
     </ScrollView>
+
   );
+
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     backgroundColor: '#020617',
@@ -182,4 +252,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 4,
   },
+
 });
