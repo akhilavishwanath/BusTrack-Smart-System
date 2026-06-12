@@ -14,7 +14,6 @@ import {
 
 import {
   getRoutes,
-  getFullRoute,
 } from '../../services/api';
 
 import {
@@ -29,121 +28,54 @@ export default function TrackingScreen() {
   const [search, setSearch] =
     useState('');
 
-  // LOAD VALID ROUTES
-
   useEffect(() => {
 
-    const loadRoutes = async () => {
+    getRoutes()
 
-      try {
+      .then((data: any[]) => {
 
-        const data =
-          await getRoutes();
+        setRoutes(data);
 
-        const validRoutes = [];
+      })
 
-        for (const route of data) {
-
-          try {
-
-            const routeData =
-              await getFullRoute(
-                route.number || route.route
-              );
-
-            const validStops =
-              (routeData.stops || []).filter(
-
-                (s: any) => {
-
-                  const lat =
-                    Number(s.latitude);
-
-                  const lng =
-                    Number(s.longitude);
-
-                  return (
-
-                    !isNaN(lat) &&
-                    !isNaN(lng) &&
-                    lat !== 0 &&
-                    lng !== 0
-
-                  );
-
-                }
-
-              );
-
-            // ONLY KEEP VALID ROUTES
-
-            if (
-              validStops.length >= 2
-            ) {
-
-              validRoutes.push(route);
-
-            }
-
-          } catch (err) {
-
-            console.log(
-              'INVALID ROUTE',
-              route.number
-            );
-
-          }
-
-        }
-
-        setRoutes(validRoutes);
-
-      } catch (error) {
+      .catch((error: any) => {
 
         console.log(error);
 
-      }
-
-    };
-
-    loadRoutes();
+      });
 
   }, []);
 
-  // SEARCH FILTER
-
   const filteredRoutes =
-    routes.filter(
-      (route: any) => {
+    routes.filter((route: any) => {
 
-        const routeName =
-          route.route ||
-          route.number ||
-          '';
+      const routeName =
+        route.route ||
+        route.number ||
+        '';
 
-        const destination =
-          route.origin_destination ||
-          route.originDestination ||
-          '';
+      const destination =
+        route.origin_destination ||
+        route.originDestination ||
+        '';
 
-        return (
+      return (
 
-          routeName
-            .toLowerCase()
-            .includes(
-              search.toLowerCase()
-            ) ||
+        routeName
+          .toLowerCase()
+          .includes(
+            search.toLowerCase()
+          ) ||
 
-          destination
-            .toLowerCase()
-            .includes(
-              search.toLowerCase()
-            )
+        destination
+          .toLowerCase()
+          .includes(
+            search.toLowerCase()
+          )
 
-        );
+      );
 
-      }
-    );
+    });
 
   return (
 
@@ -162,6 +94,7 @@ export default function TrackingScreen() {
       />
 
       {
+
         filteredRoutes.map(
           (
             route: any,
@@ -179,34 +112,42 @@ export default function TrackingScreen() {
                   pathname: '/map',
 
                   params: {
+
                     bus:
                       route.route ||
                       route.number,
+
                   },
 
                 })
 
               }
+
             >
 
               <Text style={styles.busNumber}>
+
                 🚌 {
                   route.route ||
                   route.number
                 }
+
               </Text>
 
               <Text style={styles.route}>
+
                 {
                   route.origin_destination ||
                   route.originDestination
                 }
+
               </Text>
 
             </Pressable>
 
           )
         )
+
       }
 
     </ScrollView>

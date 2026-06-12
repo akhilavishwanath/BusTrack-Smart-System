@@ -1,5 +1,6 @@
 import React, {
   useState,
+  useContext,
 } from 'react';
 
 import {
@@ -12,7 +13,27 @@ import {
   ScrollView,
 } from 'react-native';
 
+import translations
+from '../../constants/language';
+import {
+  LanguageContext,
+} from '../../context/LanguageContext';
+
 export default function ProfileScreen() {
+
+  const {
+  currentLanguage,
+  setCurrentLanguage,
+} = useContext(
+  LanguageContext
+);
+  const t = currentLanguage === 'telugu'
+  ? translations.telugu
+  : currentLanguage === 'hindi'
+  ? translations.hindi
+  : currentLanguage === 'urdu'
+  ? translations.urdu
+  : translations.english;
 
   const [name, setName] =
     useState('');
@@ -23,10 +44,17 @@ export default function ProfileScreen() {
   const [phone, setPhone] =
     useState('');
 
-  const [role, setRole] =
-    useState('Passenger');
+  const [
+    savedProfile,
+    setSavedProfile,
+  ] = useState({
+    name: '',
+    email: '',
+    phone: '',
+  });
 
-  const saveProfile = async () => {
+  const saveProfile =
+    async () => {
 
     try {
 
@@ -34,6 +62,7 @@ export default function ProfileScreen() {
         await fetch(
           'http://192.168.106.177:3000/auth/login',
           {
+
             method: 'POST',
 
             headers: {
@@ -46,7 +75,6 @@ export default function ProfileScreen() {
               name,
               email,
               phone,
-              role,
 
             }),
 
@@ -56,12 +84,24 @@ export default function ProfileScreen() {
       const data =
         await response.json();
 
+      console.log(data);
+
+      setSavedProfile({
+
+        name,
+        email,
+        phone,
+
+      });
+
+      setName('');
+      setEmail('');
+      setPhone('');
+
       Alert.alert(
         'Success',
         'Profile saved successfully!'
       );
-
-      console.log(data);
 
     } catch (error) {
 
@@ -81,23 +121,83 @@ export default function ProfileScreen() {
     <ScrollView style={styles.container}>
 
       <Text style={styles.title}>
-        👤 Profile
+        👤 {t.profile}
       </Text>
 
       <Text style={styles.subtitle}>
-        Passenger Login & Details
+        BusTrack Smart
       </Text>
+
+      {/* LANGUAGE BUTTONS */}
+
+      <View
+        style={styles.langContainer}
+      >
+
+        <Pressable
+          style={styles.langButton}
+          onPress={() =>
+            setCurrentLanguage(
+              'english'
+            )
+          }
+        >
+          <Text style={styles.langText}>
+            English
+          </Text>
+        </Pressable>
+
+        <Pressable
+          style={styles.langButton}
+          onPress={() =>
+            setCurrentLanguage(
+              'telugu'
+            )
+          }
+        >
+          <Text style={styles.langText}>
+            తెలుగు
+          </Text>
+        </Pressable>
+
+        <Pressable
+          style={styles.langButton}
+          onPress={() =>
+            setCurrentLanguage(
+              'hindi'
+            )
+          }
+        >
+          <Text style={styles.langText}>
+            हिन्दी
+          </Text>
+        </Pressable>
+
+        <Pressable
+          style={styles.langButton}
+          onPress={() =>
+            setCurrentLanguage(
+              'urdu'
+            )
+          }
+        >
+          <Text style={styles.langText}>
+            اردو
+          </Text>
+        </Pressable>
+
+      </View>
 
       {/* NAME */}
 
       <Text style={styles.label}>
-        Full Name
+        {t.fullName}
       </Text>
 
       <TextInput
         value={name}
         onChangeText={setName}
-        placeholder="Enter your name"
+        placeholder={t.fullName}
         placeholderTextColor="#94a3b8"
         style={styles.input}
       />
@@ -105,13 +205,13 @@ export default function ProfileScreen() {
       {/* EMAIL */}
 
       <Text style={styles.label}>
-        Email
+        {t.email}
       </Text>
 
       <TextInput
         value={email}
         onChangeText={setEmail}
-        placeholder="Enter email"
+        placeholder={t.email}
         placeholderTextColor="#94a3b8"
         keyboardType="email-address"
         style={styles.input}
@@ -120,33 +220,19 @@ export default function ProfileScreen() {
       {/* PHONE */}
 
       <Text style={styles.label}>
-        Phone Number
+        {t.phone}
       </Text>
 
       <TextInput
         value={phone}
         onChangeText={setPhone}
-        placeholder="Enter phone number"
+        placeholder={t.phone}
         placeholderTextColor="#94a3b8"
         keyboardType="phone-pad"
         style={styles.input}
       />
 
-      {/* ROLE */}
-
-      <Text style={styles.label}>
-        Role
-      </Text>
-
-      <TextInput
-        value={role}
-        onChangeText={setRole}
-        placeholder="Passenger / Student"
-        placeholderTextColor="#94a3b8"
-        style={styles.input}
-      />
-
-      {/* BUTTON */}
+      {/* SAVE BUTTON */}
 
       <Pressable
         style={styles.button}
@@ -154,10 +240,41 @@ export default function ProfileScreen() {
       >
 
         <Text style={styles.buttonText}>
-          Save Profile
+          {t.saveProfile}
         </Text>
 
       </Pressable>
+
+      {/* SAVED PROFILE */}
+
+      <View style={styles.aboutBox}>
+
+        <Text style={styles.aboutTitle}>
+          👤 {t.savedProfile}
+        </Text>
+
+        <Text style={styles.aboutText}>
+          {t.fullName}: {
+            savedProfile.name ||
+            'Not Added'
+          }
+        </Text>
+
+        <Text style={styles.aboutText}>
+          {t.email}: {
+            savedProfile.email ||
+            'Not Added'
+          }
+        </Text>
+
+        <Text style={styles.aboutText}>
+          {t.phone}: {
+            savedProfile.phone ||
+            'Not Added'
+          }
+        </Text>
+
+      </View>
 
       {/* ABOUT */}
 
@@ -168,26 +285,35 @@ export default function ProfileScreen() {
         </Text>
 
         <Text style={styles.aboutText}>
-          AI Powered Smart Bus
-          Tracking System for
-          Hyderabad public
-          transport.
+          ✔ {t.liveTracking}
         </Text>
 
         <Text style={styles.aboutText}>
-          ✔ Live Tracking
+          ✔ {t.crowdPrediction}
         </Text>
 
         <Text style={styles.aboutText}>
-          ✔ Crowd Prediction
+          ✔ {t.etaPrediction}
         </Text>
 
         <Text style={styles.aboutText}>
-          ✔ Smart ETA
+          ✔ {t.offlineAI}
         </Text>
 
         <Text style={styles.aboutText}>
-          ✔ AI Chatbot
+          ✔ {t.englishSupport}
+        </Text>
+
+        <Text style={styles.aboutText}>
+          ✔ {t.hindiSupport}
+        </Text>
+
+        <Text style={styles.aboutText}>
+          ✔ {t.teluguSupport}
+        </Text>
+
+        <Text style={styles.aboutText}>
+          ✔ {t.urduSupport}
         </Text>
 
       </View>
@@ -198,7 +324,8 @@ export default function ProfileScreen() {
 
 }
 
-const styles = StyleSheet.create({
+const styles =
+  StyleSheet.create({
 
   container: {
     flex: 1,
@@ -216,8 +343,27 @@ const styles = StyleSheet.create({
   subtitle: {
     color: '#94a3b8',
     fontSize: 16,
-    marginBottom: 30,
+    marginBottom: 25,
     marginTop: 5,
+  },
+
+  langContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginBottom: 25,
+  },
+
+  langButton: {
+    backgroundColor: '#1e293b',
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 12,
+  },
+
+  langText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 
   label: {
@@ -254,7 +400,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 20,
     marginTop: 30,
-    marginBottom: 40,
   },
 
   aboutTitle: {
