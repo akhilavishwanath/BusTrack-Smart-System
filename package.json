@@ -2,10 +2,13 @@
   "name": "bustrack-smart",
   "private": true,
   "scripts": {
-    "backend": "npm --prefix backend start",
-    "mobile": "npm --prefix mobile start",
-    "website": "npm --prefix website run dev"
-  },
+  "start": "expo start",
+  "android": "expo start --android",
+  "ios": "expo start --ios",
+  "web": "expo start --web",
+  "test": "jest",
+  "coverage": "jest --coverage"
+},
   "dependencies": {
     "@react-navigation/native": "^7.3.0",
     "axios": "^1.17.0",
@@ -14,6 +17,8 @@
   },
   "devDependencies": {
     "eslint": "^10.5.0",
+    "gitleaks": "^1.0.0",
+    "husky": "^9.1.7",
     "jest": "^30.4.2",
     "prettier": "^3.8.4"
   }
