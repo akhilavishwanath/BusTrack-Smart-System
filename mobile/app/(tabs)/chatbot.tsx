@@ -1,6 +1,5 @@
 import React, {
   useState,
-  useContext,
 } from 'react';
 
 import {
@@ -12,23 +11,14 @@ import {
   ScrollView,
 } from 'react-native';
 
-import {
-  getRoutes,
-} from '../../services/api';
-
 import translations from '../../constants/language';
-
-import {
-  LanguageContext,
-} from '../../context/LanguageContext';
 
 export default function ChatbotScreen() {
 
-  const {
+  const [
     currentLanguage,
-  } = useContext(
-    LanguageContext
-  );
+    setCurrentLanguage,
+  ] = useState('english');
 
   const t =
     currentLanguage === 'telugu'
@@ -49,204 +39,135 @@ export default function ChatbotScreen() {
 
     if (!message.trim()) return;
 
-    let botReply =
-      '❌ No routes found';
+    const userMessage =
+      message.toLowerCase();
 
-    try {
+    let botReply = '';
 
-      const routes =
-        await getRoutes();
+    // SECUNDERABAD
 
-      const userMessage =
-        message.toLowerCase();
+    if (
+      userMessage.includes(
+        'secunderabad'
+      )
+    ) {
 
-      // ETA
-
-      if (
-        userMessage.includes(
-          'eta'
-        )
-      ) {
-
-        botReply =
-          '⏱ Estimated arrival time is 12 mins';
-
-      }
-
-      // CROWD
-
-      else if (
-
-        userMessage.includes(
-          'crowd'
-        ) ||
-
-        userMessage.includes(
-          'prediction'
-        )
-
-      ) {
-
-        botReply =
-          '📊 AI Prediction: Medium crowd currently';
-
-      }
-
-      // HELLO
-
-      else if (
-        userMessage.includes(
-          'hello'
-        )
-      ) {
-
-        botReply =
-          '👋 Hello! Ask me about buses, routes, crowd prediction, or ETA';
-
-      }
-
-      // ROUTE SEARCH
-
-      else {
-
-        const matchedRoute =
-          routes.find((route: any) => {
-
-            const routeName =
-              (
-                route.route ||
-                route.number ||
-                ''
-              ).toLowerCase();
-
-            const destination =
-              (
-                route.origin_destination ||
-                route.originDestination ||
-                ''
-              ).toLowerCase();
-
-            // CLEAN USER MESSAGE
-
-            const cleanedMessage =
-
-              userMessage
-
-                .replace(
-                  'which',
-                  ''
-                )
-
-                .replace(
-                  'bus',
-                  ''
-                )
-
-                .replace(
-                  'goes',
-                  ''
-                )
-
-                .replace(
-                  'route',
-                  ''
-                )
-
-                .replace(
-                  'routes',
-                  ''
-                )
-
-                .replace(
-                  'tell me',
-                  ''
-                )
-
-                .replace(
-                  'to',
-                  ''
-                )
-
-                .trim();
-
-            const words =
-              cleanedMessage.split(
-                ' '
-              );
-
-            return (
-
-              words.some(
-                (word) =>
-
-                  word.length > 1 && (
-
-                    destination.includes(
-                      word
-                    ) ||
-
-                    routeName.includes(
-                      word
-                    )
-
-                  )
-
-              )
-
-            );
-
-          });
-
-        // RESPONSE
-
-        if (matchedRoute) {
-
-          botReply =
-
-            `🚌 Bus ${
-              matchedRoute.route ||
-              matchedRoute.number
-            } goes to ${
-              matchedRoute.origin_destination ||
-              matchedRoute.originDestination
-            }`;
-
-        }
-
-        else {
-
-          botReply =
-            '❌ Sorry, I could not find matching bus information';
-
-        }
-
-      }
-
-      const updatedChat: any[] = [
-
-        ...chat,
-
-        {
-          sender: 'user',
-          text: message,
-        },
-
-        {
-          sender: 'bot',
-          text: botReply,
-        },
-
-      ];
-
-      setChat(updatedChat);
-
-      setMessage('');
-
-    } catch (error) {
-
-      console.log(error);
+      botReply =
+        t.secunderabadReply;
 
     }
+
+    // DILSUKHNAGAR
+
+    else if (
+      userMessage.includes(
+        'dilsukhnagar'
+      )
+    ) {
+
+      botReply =
+        t.dilsukhnagarReply;
+
+    }
+
+    // MEHDIPATNAM
+
+    else if (
+      userMessage.includes(
+        'mehdipatnam'
+      )
+    ) {
+
+      botReply =
+        t.mehdipatnamReply;
+
+    }
+
+    // ETA
+
+    else if (
+
+      userMessage.includes(
+        'eta'
+      ) ||
+
+      userMessage.includes(
+        'arrival'
+      )
+
+    ) {
+
+      botReply =
+        t.etaReply;
+
+    }
+
+    // CROWD
+
+    else if (
+
+      userMessage.includes(
+        'crowd'
+      ) ||
+
+      userMessage.includes(
+        'prediction'
+      )
+
+    ) {
+
+      botReply =
+        t.crowdReply;
+
+    }
+
+    // HELLO
+
+    else if (
+
+      userMessage.includes(
+        'hello'
+      ) ||
+
+      userMessage.includes(
+        'hi'
+      )
+
+    ) {
+
+      botReply =
+        t.helloReply;
+
+    }
+
+    // DEFAULT
+
+    else {
+
+      botReply =
+        t.notFound;
+
+    }
+
+    const updatedChat = [
+
+      ...chat,
+
+      {
+        sender: 'user',
+        text: message,
+      },
+
+      {
+        sender: 'bot',
+        text: botReply,
+      },
+
+    ];
+
+    setChat(updatedChat);
+
+    setMessage('');
 
   };
 
@@ -254,9 +175,79 @@ export default function ChatbotScreen() {
 
     <View style={styles.container}>
 
+      {/* LANGUAGE BUTTONS */}
+
+      <View style={styles.langContainer}>
+
+        <Pressable
+          style={styles.langButton}
+          onPress={() =>
+            setCurrentLanguage(
+              'english'
+            )
+          }
+        >
+
+          <Text style={styles.langText}>
+            English
+          </Text>
+
+        </Pressable>
+
+        <Pressable
+          style={styles.langButton}
+          onPress={() =>
+            setCurrentLanguage(
+              'telugu'
+            )
+          }
+        >
+
+          <Text style={styles.langText}>
+            తెలుగు
+          </Text>
+
+        </Pressable>
+
+        <Pressable
+          style={styles.langButton}
+          onPress={() =>
+            setCurrentLanguage(
+              'hindi'
+            )
+          }
+        >
+
+          <Text style={styles.langText}>
+            हिन्दी
+          </Text>
+
+        </Pressable>
+
+        <Pressable
+          style={styles.langButton}
+          onPress={() =>
+            setCurrentLanguage(
+              'urdu'
+            )
+          }
+        >
+
+          <Text style={styles.langText}>
+            اردو
+          </Text>
+
+        </Pressable>
+
+      </View>
+
+      {/* TITLE */}
+
       <Text style={styles.title}>
         🤖 {t.chatbot}
       </Text>
+
+      {/* CHAT */}
 
       <ScrollView
         style={styles.chatContainer}
@@ -293,13 +284,17 @@ export default function ChatbotScreen() {
 
       </ScrollView>
 
+      {/* INPUT */}
+
       <TextInput
         value={message}
         onChangeText={setMessage}
-        placeholder="Ask about routes, buses, ETA..."
+        placeholder={t.search}
         placeholderTextColor="#94a3b8"
         style={styles.input}
       />
+
+      {/* BUTTON */}
 
       <Pressable
         style={styles.button}
@@ -311,6 +306,8 @@ export default function ChatbotScreen() {
         </Text>
 
       </Pressable>
+
+      {/* FEATURES */}
 
       <View style={styles.featuresBox}>
 
@@ -330,6 +327,22 @@ export default function ChatbotScreen() {
           ✔ {t.offlineAI}
         </Text>
 
+        <Text style={styles.feature}>
+          ✔ {t.englishSupport}
+        </Text>
+
+        <Text style={styles.feature}>
+          ✔ {t.hindiSupport}
+        </Text>
+
+        <Text style={styles.feature}>
+          ✔ {t.teluguSupport}
+        </Text>
+
+        <Text style={styles.feature}>
+          ✔ {t.urduSupport}
+        </Text>
+
       </View>
 
     </View>
@@ -345,6 +358,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#020617',
     padding: 20,
     paddingTop: 60,
+  },
+
+  langContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginBottom: 20,
+  },
+
+  langButton: {
+    backgroundColor: '#1e293b',
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 12,
+  },
+
+  langText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 
   title: {
