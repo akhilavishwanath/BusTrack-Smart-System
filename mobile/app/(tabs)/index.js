@@ -1,29 +1,23 @@
 import React, {
   useState,
-  useContext,
 } from 'react';
 
 import {
   View,
   Text,
   StyleSheet,
-  Pressable,
   ScrollView,
+  Pressable,
 } from 'react-native';
 
 import translations from '../../constants/language';
 
-import {
-  LanguageContext,
-} from '../../context/LanguageContext';
-
 export default function HomeScreen() {
 
-  const {
+  const [
     currentLanguage,
-  } = useContext(
-    LanguageContext
-  );
+    setCurrentLanguage,
+  ] = useState('english');
 
   const t =
     currentLanguage === 'telugu'
@@ -34,135 +28,213 @@ export default function HomeScreen() {
       ? translations.urdu
       : translations.english;
 
-  const [dashboard] = useState({
-    activeBuses: 128,
-    totalRoutes: 524,
-    averageEtaMinutes: 23,
-
-    featuredRoutes: [
-
-      {
-        number: '1C',
-        originDestination:
-          'CBS TO SECUNDERABAD',
-        crowd: 'High',
-        etaMinutes: 8,
-      },
-
-      {
-        number: '1D',
-        originDestination:
-          'CHILKALGUDA TO DILSUKH NAGAR',
-        crowd: 'Medium',
-        etaMinutes: 11,
-      },
-
-    ],
-
-  });
-
   return (
 
     <ScrollView style={styles.container}>
 
-      <Text style={styles.title}>
-        🚌 BusTrack Smart
-      </Text>
+      {/* LANGUAGE BUTTONS */}
 
-      <Text style={styles.subtitle}>
-        Smart Hyderabad Bus Tracking System
-      </Text>
+      <View style={styles.langContainer}>
 
-      <View style={styles.statsBox}>
+        <Pressable
+          style={styles.langButton}
+          onPress={() =>
+            setCurrentLanguage(
+              'english'
+            )
+          }
+        >
 
-        <Text style={styles.info}>
-          🚍 Active Buses:
-          {' '}
-          {dashboard.activeBuses}
+          <Text style={styles.langText}>
+            English
+          </Text>
+
+        </Pressable>
+
+        <Pressable
+          style={styles.langButton}
+          onPress={() =>
+            setCurrentLanguage(
+              'telugu'
+            )
+          }
+        >
+
+          <Text style={styles.langText}>
+            తెలుగు
+          </Text>
+
+        </Pressable>
+
+        <Pressable
+          style={styles.langButton}
+          onPress={() =>
+            setCurrentLanguage(
+              'hindi'
+            )
+          }
+        >
+
+          <Text style={styles.langText}>
+            हिन्दी
+          </Text>
+
+        </Pressable>
+
+        <Pressable
+          style={styles.langButton}
+          onPress={() =>
+            setCurrentLanguage(
+              'urdu'
+            )
+          }
+        >
+
+          <Text style={styles.langText}>
+            اردو
+          </Text>
+
+        </Pressable>
+
+      </View>
+
+      {/* HERO */}
+
+      <View style={styles.heroCard}>
+
+        <Text style={styles.heroTitle}>
+          🚌 BusTrack Smart
         </Text>
 
-        <Text style={styles.info}>
-          🛣 Total Routes:
-          {' '}
-          {dashboard.totalRoutes}
-        </Text>
-
-        <Text style={styles.info}>
-          ⏱ Avg ETA:
-          {' '}
-          {dashboard.averageEtaMinutes}
-          {' '}
-          mins
+        <Text style={styles.heroSubtitle}>
+          {t.heroSubtitle}
         </Text>
 
       </View>
 
-      <Pressable style={styles.card}>
-        <Text style={styles.cardText}>
-          📍 {t.liveTracking}
-        </Text>
-      </Pressable>
-
-      <Pressable style={styles.card}>
-        <Text style={styles.cardText}>
-          🤖 {t.chatbot}
-        </Text>
-      </Pressable>
-
-      <Pressable style={styles.card}>
-        <Text style={styles.cardText}>
-          📊 {t.crowdPrediction}
-        </Text>
-      </Pressable>
-
-      <Pressable style={styles.card}>
-        <Text style={styles.cardText}>
-          🗺 Route Navigation
-        </Text>
-      </Pressable>
+      {/* DASHBOARD */}
 
       <Text style={styles.sectionTitle}>
-        {t.featuredRoutes}
+        🚀 {t.smartDashboard}
       </Text>
 
-      {
+      <View style={styles.featureGrid}>
 
-        dashboard.featuredRoutes.map(
-          (route, index) => (
+        <View style={styles.featureCard}>
 
-            <View
-              key={index}
-              style={styles.routeCard}
-            >
+          <Text style={styles.featureIcon}>
+            📍
+          </Text>
 
-              <Text style={styles.routeNumber}>
-                {route.number}
-              </Text>
+          <Text style={styles.featureTitle}>
+            {t.liveTracking}
+          </Text>
 
-              <Text style={styles.routeText}>
-                {route.originDestination}
-              </Text>
+        </View>
 
-              <Text style={styles.routeInfo}>
-                Crowd:
-                {' '}
-                {route.crowd}
-              </Text>
+        <View style={styles.featureCard}>
 
-              <Text style={styles.routeInfo}>
-                ETA:
-                {' '}
-                {route.etaMinutes}
-                {' '}
-                mins
-              </Text>
+          <Text style={styles.featureIcon}>
+            🤖
+          </Text>
 
-            </View>
+          <Text style={styles.featureTitle}>
+            {t.chatbot}
+          </Text>
 
-          )
-        )
+        </View>
 
-      }
+        <View style={styles.featureCard}>
+
+          <Text style={styles.featureIcon}>
+            📊
+          </Text>
+
+          <Text style={styles.featureTitle}>
+            {t.crowdPrediction}
+          </Text>
+
+        </View>
+
+        <View style={styles.featureCard}>
+
+          <Text style={styles.featureIcon}>
+            🗺
+          </Text>
+
+          <Text style={styles.featureTitle}>
+            {t.smartNavigation}
+          </Text>
+
+        </View>
+
+      </View>
+
+      {/* LIVE CITY STATUS */}
+
+      <Text style={styles.sectionTitle}>
+        🌆 {t.liveCity}
+      </Text>
+
+      <View style={styles.statusCard}>
+
+        <Text style={styles.statusText}>
+          🟢 {t.cityTraffic}: {t.moderate}
+        </Text>
+
+        <Text style={styles.statusText}>
+          🚍 {t.busesRunning}: 128
+        </Text>
+
+        <Text style={styles.statusText}>
+          📈 {t.peakCrowd}: 8AM - 11AM
+        </Text>
+
+        <Text style={styles.statusText}>
+          ⚡ {t.aiAccuracy}: 96%
+        </Text>
+
+      </View>
+
+      {/* AI INSIGHTS */}
+
+      <Text style={styles.sectionTitle}>
+        💡 {t.aiInsights}
+      </Text>
+
+      <View style={styles.insightCard}>
+
+        <Text style={styles.insightText}>
+          {t.travelAdvice}
+        </Text>
+
+      </View>
+
+      {/* MULTILINGUAL */}
+
+      <Text style={styles.sectionTitle}>
+        🌐 {t.multilingual}
+      </Text>
+
+      <View style={styles.languageCard}>
+
+        <Text style={styles.languageText}>
+          ✔ {t.englishSupport}
+        </Text>
+
+        <Text style={styles.languageText}>
+          ✔ {t.teluguSupport}
+        </Text>
+
+        <Text style={styles.languageText}>
+          ✔ {t.hindiSupport}
+        </Text>
+
+        <Text style={styles.languageText}>
+          ✔ {t.urduSupport}
+        </Text>
+
+      </View>
 
     </ScrollView>
 
@@ -178,79 +250,117 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 
-  title: {
-    color: 'white',
-    fontSize: 34,
-    fontWeight: 'bold',
+  langContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
     marginTop: 50,
-    marginBottom: 10,
-  },
-
-  subtitle: {
-    color: '#94a3b8',
-    fontSize: 16,
     marginBottom: 20,
   },
 
-  statsBox: {
-    backgroundColor: '#0f172a',
-    padding: 18,
-    borderRadius: 20,
-    marginBottom: 25,
+  langButton: {
+    backgroundColor: '#1e293b',
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 12,
   },
 
-  info: {
-    color: '#38bdf8',
-    fontSize: 16,
-    marginBottom: 8,
-    fontWeight: '600',
+  langText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 
-  card: {
-    backgroundColor: '#0f172a',
-    padding: 20,
-    borderRadius: 18,
-    marginBottom: 16,
+  heroCard: {
+    backgroundColor: '#22c55e',
+    padding: 30,
+    borderRadius: 24,
+    marginBottom: 30,
   },
 
-  cardText: {
+  heroTitle: {
+    color: 'white',
+    fontSize: 34,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+
+  heroSubtitle: {
     color: 'white',
     fontSize: 18,
-    fontWeight: '600',
   },
 
   sectionTitle: {
     color: 'white',
     fontSize: 24,
     fontWeight: 'bold',
-    marginTop: 20,
-    marginBottom: 16,
+    marginBottom: 18,
   },
 
-  routeCard: {
-    backgroundColor: '#111827',
-    padding: 18,
-    borderRadius: 18,
+  featureGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 30,
+  },
+
+  featureCard: {
+    backgroundColor: '#0f172a',
+    width: '48%',
+    padding: 24,
+    borderRadius: 22,
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+
+  featureIcon: {
+    fontSize: 38,
+    marginBottom: 12,
+  },
+
+  featureTitle: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+
+  statusCard: {
+    backgroundColor: '#0f172a',
+    padding: 24,
+    borderRadius: 22,
+    marginBottom: 30,
+  },
+
+  statusText: {
+    color: 'white',
+    fontSize: 18,
     marginBottom: 14,
   },
 
-  routeNumber: {
-    color: '#22c55e',
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 8,
+  insightCard: {
+    backgroundColor: '#22c55e',
+    padding: 24,
+    borderRadius: 22,
+    marginBottom: 30,
   },
 
-  routeText: {
+  insightText: {
     color: 'white',
-    fontSize: 15,
-    marginBottom: 8,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 
-  routeInfo: {
-    color: '#94a3b8',
-    fontSize: 14,
-    marginBottom: 4,
+  languageCard: {
+    backgroundColor: '#0f172a',
+    padding: 24,
+    borderRadius: 22,
+    marginBottom: 40,
+  },
+
+  languageText: {
+    color: 'white',
+    fontSize: 18,
+    marginBottom: 12,
   },
 
 });
