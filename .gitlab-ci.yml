@@ -1,11 +1,9 @@
 stages:
-
- - test
+  - test
 
 test-job:
   stage: test
   image: node:18
-
-script:
-  - npm install
-  - npm test
+  script:
+    - npm install
+    - npm test
