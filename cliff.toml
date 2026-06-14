@@ -1,0 +1,4 @@
+[changelog]
+header = "# Changelog"
+body = "Automated changelog generation"
+trim = true
