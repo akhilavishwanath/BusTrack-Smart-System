@@ -1,47 +1,60 @@
-# 🚌 BusTrack Smart
+# 🚍 BusTrack Smart
 
-## 🚦 AI-Powered TGSRTC Bus Tracking & Crowd Prediction System
+## AI-Powered Smart Public Transportation System for Telangana
 
 ---
 
 # 🌟 Overview
 
-BusTrack Smart is an AI-powered civic-tech platform designed to improve public transportation in Telangana by providing:
+**BusTrack Smart** is an AI-powered civic-tech platform designed to improve public transportation experience in Telangana through:
 
-✅ Real-time TGSRTC bus tracking
-✅ ETA prediction
-✅ Crowd prediction & occupancy analysis
-✅ Smart route recommendations
-✅ Commuter safety alerts
-✅ Transport analytics dashboard
+* 📍 Real-time TGSRTC bus tracking
+* ⏱️ Smart ETA prediction
+* 👥 AI crowd prediction
+* 🧠 Intelligent route recommendations
+* 🚨 Passenger safety alerts
+* 🌐 Multilingual commuter support
+* 📊 Smart transport analytics dashboard
 
-The platform helps daily commuters travel smarter, safer, and faster using intelligent transport analytics and live data visualization.
+The platform helps commuters travel smarter, safer, and faster using intelligent transportation insights, predictive AI, and real-time monitoring.
 
 ---
 
 # ❗ Problem Statement
 
-Daily commuters using public transport face many challenges such as:
+Daily commuters using public transportation face several major challenges:
 
-🚏 Uncertain bus arrival timings
-👥 Overcrowded buses
-🛣️ Inefficient route planning
-📡 Lack of live transport updates
-⚠️ Limited commuter safety features
+* 🚏 Uncertain bus arrival timings
+* 👥 Overcrowded buses
+* 🛣️ Inefficient route planning
+* 📡 Lack of real-time transport updates
+* ⚠️ Limited commuter safety features
+* 🌐 Language accessibility barriers
 
-Existing public transport systems often lack predictive analytics and real-time occupancy insights.
+Most existing transport systems lack:
 
-✨ BusTrack Smart solves these issues using AI-powered smart transportation monitoring.
+* predictive analytics,
+* crowd estimation,
+* intelligent route optimization,
+* multilingual accessibility,
+* and offline support.
+
+---
+
+# ✨ Solution
+
+**BusTrack Smart** solves these challenges using AI-powered transportation monitoring, smart route analytics, and multilingual commuter assistance.
 
 ---
 
 # 🎯 Objectives
 
-* 🚍 Improve public transport experience
-* ⏱️ Reduce passenger waiting time
+* 🚍 Improve public transportation experience
+* ⏱️ Reduce commuter waiting time
 * 👥 Avoid overcrowded buses
-* 🗺️ Provide smarter route suggestions
-* 🏙️ Support smart-city transportation systems
+* 🗺️ Provide optimized route suggestions
+* 🌐 Support multilingual accessibility
+* 📊 Support smart-city transportation systems
 * 🔒 Improve commuter safety
 
 ---
@@ -52,17 +65,23 @@ Existing public transport systems often lack predictive analytics and real-time 
 
 Track live TGSRTC bus locations directly on maps.
 
-## ⏳ ETA Prediction
+---
 
-Predict accurate bus arrival timings.
+## ⏳ AI ETA Prediction
 
-## 👥 Crowd Prediction
+Predict accurate bus arrival timings using intelligent transport analytics.
 
-Analyze bus occupancy levels:
+---
+
+## 👥 AI Crowd Prediction
+
+Analyze and predict occupancy levels:
 
 * 🟢 Low Crowd
 * 🟡 Moderate Crowd
 * 🔴 High Crowd
+
+---
 
 ## 🧠 Smart Route Recommendations
 
@@ -70,151 +89,217 @@ Suggest:
 
 * faster routes,
 * less crowded buses,
-* efficient travel options.
+* efficient travel alternatives.
+
+---
+
+## 🌐 Multilingual Support
+
+Supports multiple regional languages:
+
+* English
+* Telugu
+* Hindi
+* Urdu
+
+---
+
+## 🤖 AI Chatbot Assistance
+
+Provides:
+
+* route guidance,
+* ETA assistance,
+* bus information,
+* crowd prediction support.
+
+---
 
 ## 🚨 Safety Alerts
 
-Provide commuter safety and route alerts.
+Provide commuter safety notifications and route alerts.
 
-## 📊 Admin Dashboard
+---
+
+## 📊 Analytics Dashboard
 
 Transport authorities can monitor:
 
 * buses,
 * crowd analytics,
-* route efficiency,
-* transport performance.
+* transport efficiency,
+* commuter trends,
+* route performance.
 
 ---
 
 # 🛠️ Tech Stack
 
-## 🎨 Frontend
+## 📱 Mobile Application
 
-* ⚛️ React.js / Next.js
+* ⚛️ React Native
+* 📱 Expo
+
+---
+
+## 🌐 Website Dashboard
+
+* ⚛️ React.js
 * 🎨 Tailwind CSS
-* 🗺️ Leaflet Maps
+
+---
 
 ## ⚙️ Backend
 
-* 🐍 Python FastAPI
+* 🟢 Node.js
+* 🚀 Express.js
+
+---
 
 ## 🗄️ Database
 
-* 🔥 Firebase / MongoDB
+* 🗃️ SQLite
 
-## 🤖 AI/ML
+---
+
+## 🤖 AI / ML
 
 * 📈 Predictive Analytics
-* 🧠 Occupancy Prediction Logic
+* 🧠 Crowd Prediction Logic
+* ⏱️ ETA Prediction Models
+* 📊 Smart Transport Analytics
 
 ---
 
 # 🏗️ System Architecture
 
-```text id="xldv20"
-User App
-   ↓
-Backend API
-   ↓
-Bus Data Processing
-   ↓
-AI Prediction Engine
-   ↓
-Maps & Analytics Dashboard
+```text id="8m2qvl"
+Mobile App / Website
+          ↓
+     Node.js Backend
+          ↓
+     SQLite Database
+          ↓
+   AI Prediction Engine
+          ↓
+Tracking & Analytics Dashboard
 ```
-
----
 
 # 📂 Project Structure
 
-```bash id="t53hlo"
+```text id="5v7qpl"
 BusTrackSmart/
 │
-├── frontend/
 ├── backend/
-├── docs/
+├── mobile/
+├── website/
+├── tests/
 ├── specs/
+├── .github/
 ├── README.md
 ├── CONTRIBUTING.md
-└── USER_MANUAL.md
+├── USER_MANUAL.md
+├── CHANGELOG.md
+└── LICENSE
 ```
-
----
 
 # ⚡ Installation Guide
 
 ## 📥 Clone Repository
 
-```bash id="yk8lzk"
+```bash id="2q8mzs"
 git clone https://code.swecha.org/jyothi_sanjay/bustrack-smart.git
 cd bustrack-smart
 ```
 
----
+# 📱 Mobile App Setup
 
-## 💻 Frontend Setup
+```bash id="7m4qvl"
+cd mobile
+npm install
+npm start
+```
 
-```bash id="uv23bo"
-cd frontend
+# 🌐 Website Setup
+
+```bash id="9x4qpk"
+cd website
 npm install
 npm run dev
 ```
 
----
+# ⚙️ Backend Setup
 
-## ⚙️ Backend Setup
-
-```bash id="br49q4"
+```bash id="4m2qpk"
 cd backend
-pip install -r requirements.txt
-uvicorn main:app --reload
+npm install
+npm start
 ```
-
----
 
 # 🎥 Demo Workflow
 
-1️⃣ Open application
-2️⃣ Search bus number or route
-3️⃣ View live location on map
-4️⃣ Check ETA & crowd level
-5️⃣ Choose best route option
+1️⃣ Open the application
+2️⃣ Select preferred language
+3️⃣ Search bus route or destination
+4️⃣ View live bus tracking on maps
+5️⃣ Check ETA and crowd prediction
+6️⃣ Get smart route recommendations
+7️⃣ Use AI chatbot assistance
+8️⃣ Monitor analytics dashboard
+
+---
+
+# 🔒 Accessibility & Offline Support
+
+* 🌐 Multilingual user interface
+* 📱 Mobile-first responsive design
+* ⚡ Offline-first architecture
+* 🤖 Lightweight local AI support
+* ♿ Accessibility-focused commuter experience
+
+---
+
+# 📊 Compliance & Engineering Standards
+
+* ✅ ESLint
+* ✅ Prettier
+* ✅ Husky Pre-commit Hooks
+* ✅ GitLab CI Pipeline
+* ✅ Jest Testing
+* ✅ Docker Support
+* ✅ AGPLv3 Licensed
+* ✅ Spec-Driven Development
 
 ---
 
 # 🔮 Future Enhancements
 
-🚍 Real TGSRTC API integration
-📱 Mobile application support
-🎫 Smart ticketing system
-🎙️ Voice assistant support
-📊 AI peak-hour prediction
-🚨 Emergency SOS support
+* 🚍 Real TGSRTC API integration
+* 📱 Full production deployment
+* 🎫 Smart ticketing system
+* 🎙️ Voice assistant integration
+* 📊 AI peak-hour forecasting
+* 🚨 Emergency SOS support
+* ☁️ Cloud analytics integration
 
 ---
 
 # 👨‍💻 Contributors
 
-* Akhila Vishwanath
-* Sanjay Jyothi
+* 👩‍💻 Akhila Vishwanath
+* 👨‍💻 Sanjay Jyothi
 
 ---
 
 # 🏆 Hackathon Theme
 
-🏙️ Civic Tech
-🤖 Artificial Intelligence
-🚦 Smart Transportation
-🌱 Smart Cities
-
----
+* 🏙️ Civic Tech
+* 🤖 Artificial Intelligence
+* 🚦 Smart Transportation
+* 🌱 Smart Cities
 
 # 📜 License
 
-This project is developed for educational and hackathon purposes.
+This project is licensed under the **GNU AGPLv3 License**.
 
----
-
-# ❤️ Made with Innovation for Smarter Public Transport
-
+Developed for educational, research, and hackathon purposes.
