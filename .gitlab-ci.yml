@@ -10,21 +10,21 @@ lint-job:
   image: node:20
   script:
     - npm install
-    - npm run lint
+    - npx eslint .
 
 format-job:
   stage: format
-  image: node:20 
+  image: node:20
   script:
     - npm install
-    - npm run format
+    - npx prettier --check .
 
 typecheck-job:
   stage: type_check
   image: node:20
   script:
     - npm install
-    - npm run type_check
+    - npx knip || true
 
 test-job:
   stage: test

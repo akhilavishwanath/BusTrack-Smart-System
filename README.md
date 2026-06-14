@@ -8,13 +8,13 @@
 
 **BusTrack Smart** is an AI-powered civic-tech platform designed to improve public transportation experience in Telangana through:
 
-* 📍 Real-time TGSRTC bus tracking
-* ⏱️ Smart ETA prediction
-* 👥 AI crowd prediction
-* 🧠 Intelligent route recommendations
-* 🚨 Passenger safety alerts
-* 🌐 Multilingual commuter support
-* 📊 Smart transport analytics dashboard
+- 📍 Real-time TGSRTC bus tracking
+- ⏱️ Smart ETA prediction
+- 👥 AI crowd prediction
+- 🧠 Intelligent route recommendations
+- 🚨 Passenger safety alerts
+- 🌐 Multilingual commuter support
+- 📊 Smart transport analytics dashboard
 
 The platform helps commuters travel smarter, safer, and faster using intelligent transportation insights, predictive AI, and real-time monitoring.
 
@@ -24,20 +24,20 @@ The platform helps commuters travel smarter, safer, and faster using intelligent
 
 Daily commuters using public transportation face several major challenges:
 
-* 🚏 Uncertain bus arrival timings
-* 👥 Overcrowded buses
-* 🛣️ Inefficient route planning
-* 📡 Lack of real-time transport updates
-* ⚠️ Limited commuter safety features
-* 🌐 Language accessibility barriers
+- 🚏 Uncertain bus arrival timings
+- 👥 Overcrowded buses
+- 🛣️ Inefficient route planning
+- 📡 Lack of real-time transport updates
+- ⚠️ Limited commuter safety features
+- 🌐 Language accessibility barriers
 
 Most existing transport systems lack:
 
-* predictive analytics,
-* crowd estimation,
-* intelligent route optimization,
-* multilingual accessibility,
-* and offline support.
+- predictive analytics,
+- crowd estimation,
+- intelligent route optimization,
+- multilingual accessibility,
+- and offline support.
 
 ---
 
@@ -212,36 +212,36 @@ npm start
 
 # 🔒 Accessibility & Offline Support
 
-* 🌐 Multilingual user interface
-* 📱 Mobile-first responsive design
-* ⚡ Offline-first architecture
-* 🤖 Lightweight local AI support
-* ♿ Accessibility-focused commuter experience
+- 🌐 Multilingual user interface
+- 📱 Mobile-first responsive design
+- ⚡ Offline-first architecture
+- 🤖 Lightweight local AI support
+- ♿ Accessibility-focused commuter experience
 
 ---
 
 # 📊 Compliance & Engineering Standards
 
-* ✅ ESLint
-* ✅ Prettier
-* ✅ Husky Pre-commit Hooks
-* ✅ GitLab CI Pipeline
-* ✅ Jest Testing
-* ✅ Docker Support
-* ✅ AGPLv3 Licensed
-* ✅ Spec-Driven Development
+- ✅ ESLint
+- ✅ Prettier
+- ✅ Husky Pre-commit Hooks
+- ✅ GitLab CI Pipeline
+- ✅ Jest Testing
+- ✅ Docker Support
+- ✅ AGPLv3 Licensed
+- ✅ Spec-Driven Development
 
 ---
 
 # 🔮 Future Enhancements
 
-* 🚍 Real TGSRTC API integration
-* 📱 Full production deployment
-* 🎫 Smart ticketing system
-* 🎙️ Voice assistant integration
-* 📊 AI peak-hour forecasting
-* 🚨 Emergency SOS support
-* ☁️ Cloud analytics integration
+- 🚍 Real TGSRTC API integration
+- 📱 Full production deployment
+- 🎫 Smart ticketing system
+- 🎙️ Voice assistant integration
+- 📊 AI peak-hour forecasting
+- 🚨 Emergency SOS support
+- ☁️ Cloud analytics integration
 
 ---
 
@@ -254,10 +254,10 @@ npm start
 
 # 🏆 Hackathon Theme
 
-* 🏙️ Civic Tech
-* 🤖 Artificial Intelligence
-* 🚦 Smart Transportation
-* 🌱 Smart Cities
+- 🏙️ Civic Tech
+- 🤖 Artificial Intelligence
+- 🚦 Smart Transportation
+- 🌱 Smart Cities
 
 # 📜 License
 
