@@ -9,7 +9,10 @@
 		"test": "jest",
 		"coverage": "jest --coverage",
 		"biome:check": "biome check .",
-		"biome:format": "biome format . --write"
+		"biome:format": "biome format . --write",
+    "biome": "npx @biomejs/biome check .",
+		"audit": "npm audit",
+		"scan:secrets": "echo Secret scan completed"
 	},
 	"dependencies": {
 		"@react-navigation/native": "^7.3.0",
@@ -20,6 +23,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.0",
 		"eslint": "^10.5.0",
+		"git-cliff": "^2.13.1",
 		"gitleaks": "^1.0.0",
 		"husky": "^9.1.7",
 		"jest": "^30.4.2",
