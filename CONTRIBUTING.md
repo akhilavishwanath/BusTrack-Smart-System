@@ -64,17 +64,17 @@ ui: improved mobile dashboard
 
 ## 📱 Frontend
 
-* Use reusable components
-* Follow responsive design
-* Maintain clean UI/UX
-* Use proper naming conventions
+- Use reusable components
+- Follow responsive design
+- Maintain clean UI/UX
+- Use proper naming conventions
 
 ## ⚙️ Backend
 
-* Keep APIs modular
-* Follow FastAPI standards
-* Write optimized routes
-* Maintain API documentation
+- Keep APIs modular
+- Follow FastAPI standards
+- Write optimized routes
+- Maintain API documentation
 
 ---
 
@@ -93,11 +93,11 @@ specs/
 
 While creating issues include:
 
-* issue title
-* screenshots
-* expected behavior
-* actual behavior
-* device/platform details
+- issue title
+- screenshots
+- expected behavior
+- actual behavior
+- device/platform details
 
 ---
 

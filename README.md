@@ -37,12 +37,12 @@ Existing public transport systems often lack predictive analytics and real-time 
 
 # 🎯 Objectives
 
-* 🚍 Improve public transport experience
-* ⏱️ Reduce passenger waiting time
-* 👥 Avoid overcrowded buses
-* 🗺️ Provide smarter route suggestions
-* 🏙️ Support smart-city transportation systems
-* 🔒 Improve commuter safety
+- 🚍 Improve public transport experience
+- ⏱️ Reduce passenger waiting time
+- 👥 Avoid overcrowded buses
+- 🗺️ Provide smarter route suggestions
+- 🏙️ Support smart-city transportation systems
+- 🔒 Improve commuter safety
 
 ---
 
@@ -60,17 +60,17 @@ Predict accurate bus arrival timings.
 
 Analyze bus occupancy levels:
 
-* 🟢 Low Crowd
-* 🟡 Moderate Crowd
-* 🔴 High Crowd
+- 🟢 Low Crowd
+- 🟡 Moderate Crowd
+- 🔴 High Crowd
 
 ## 🧠 Smart Route Recommendations
 
 Suggest:
 
-* faster routes,
-* less crowded buses,
-* efficient travel options.
+- faster routes,
+- less crowded buses,
+- efficient travel options.
 
 ## 🚨 Safety Alerts
 
@@ -80,10 +80,10 @@ Provide commuter safety and route alerts.
 
 Transport authorities can monitor:
 
-* buses,
-* crowd analytics,
-* route efficiency,
-* transport performance.
+- buses,
+- crowd analytics,
+- route efficiency,
+- transport performance.
 
 ---
 
@@ -91,22 +91,22 @@ Transport authorities can monitor:
 
 ## 🎨 Frontend
 
-* ⚛️ React.js / Next.js
-* 🎨 Tailwind CSS
-* 🗺️ Leaflet Maps
+- ⚛️ React.js / Next.js
+- 🎨 Tailwind CSS
+- 🗺️ Leaflet Maps
 
 ## ⚙️ Backend
 
-* 🐍 Python FastAPI
+- 🐍 Python FastAPI
 
 ## 🗄️ Database
 
-* 🔥 Firebase / MongoDB
+- 🔥 Firebase / MongoDB
 
 ## 🤖 AI/ML
 
-* 📈 Predictive Analytics
-* 🧠 Occupancy Prediction Logic
+- 📈 Predictive Analytics
+- 🧠 Occupancy Prediction Logic
 
 ---
 
@@ -196,8 +196,8 @@ uvicorn main:app --reload
 
 # 👨‍💻 Contributors
 
-* Akhila Vishwanath
-* Sanjay Jyothi
+- Akhila Vishwanath
+- Sanjay Jyothi
 
 ---
 
@@ -217,4 +217,3 @@ This project is developed for educational and hackathon purposes.
 ---
 
 # ❤️ Made with Innovation for Smarter Public Transport
-

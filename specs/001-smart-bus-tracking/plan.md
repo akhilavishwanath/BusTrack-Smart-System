@@ -12,13 +12,13 @@ The project focuses on creating a modern smart-city transportation solution that
 
 The primary objectives of this project are:
 
-* Provide real-time bus tracking
-* Reduce commuter waiting time
-* Improve passenger accessibility
-* Enable multilingual public transport support
-* Deliver AI-powered crowd prediction
-* Improve urban transportation efficiency
-* Support offline-first smart transport features
+- Provide real-time bus tracking
+- Reduce commuter waiting time
+- Improve passenger accessibility
+- Enable multilingual public transport support
+- Deliver AI-powered crowd prediction
+- Improve urban transportation efficiency
+- Support offline-first smart transport features
 
 ---
 
@@ -30,10 +30,10 @@ Users can monitor live bus routes and transportation movement through an interac
 
 ### Features:
 
-* Route tracking
-* Live bus monitoring
-* Route search
-* Smart navigation
+- Route tracking
+- Live bus monitoring
+- Route search
+- Smart navigation
 
 ---
 
@@ -43,10 +43,10 @@ The system predicts passenger crowd levels and route demand using AI-based trans
 
 ### Features:
 
-* Passenger analysis
-* Route demand analysis
-* Traffic prediction
-* Smart travel suggestions
+- Passenger analysis
+- Route demand analysis
+- Traffic prediction
+- Smart travel suggestions
 
 ---
 
@@ -56,9 +56,9 @@ The application estimates bus arrival times based on transportation conditions a
 
 ### Features:
 
-* Arrival prediction
-* Delay estimation
-* Route timing optimization
+- Arrival prediction
+- Delay estimation
+- Route timing optimization
 
 ---
 
@@ -68,10 +68,10 @@ An AI-powered chatbot assists users with transportation-related queries.
 
 ### Features:
 
-* Route assistance
-* ETA queries
-* Crowd prediction support
-* Smart commuter interaction
+- Route assistance
+- ETA queries
+- Crowd prediction support
+- Smart commuter interaction
 
 ---
 
@@ -81,10 +81,10 @@ The application supports multiple languages for inclusive commuter accessibility
 
 ### Supported Languages:
 
-* English
-* Telugu
-* Hindi
-* Urdu
+- English
+- Telugu
+- Hindi
+- Urdu
 
 ---
 
@@ -92,25 +92,25 @@ The application supports multiple languages for inclusive commuter accessibility
 
 ## Frontend
 
-* React Native
-* Expo
-* JavaScript
+- React Native
+- Expo
+- JavaScript
 
 ## Backend
 
-* Node.js
-* Express.js
+- Node.js
+- Express.js
 
 ## Database
 
-* Firebase
-* SQLite
+- Firebase
+- SQLite
 
 ## AI Features
 
-* AI-assisted chatbot
-* Smart prediction logic
-* AI-generated commuter insights
+- AI-assisted chatbot
+- Smart prediction logic
+- AI-generated commuter insights
 
 ---
 
@@ -118,31 +118,31 @@ The application supports multiple languages for inclusive commuter accessibility
 
 ## Phase 1 — Planning & UI Design
 
-* Project planning
-* UI wireframes
-* Navigation structure
-* Smart dashboard design
+- Project planning
+- UI wireframes
+- Navigation structure
+- Smart dashboard design
 
 ## Phase 2 — Core Feature Development
 
-* Tracking page
-* Prediction module
-* Chatbot implementation
-* Route system integration
+- Tracking page
+- Prediction module
+- Chatbot implementation
+- Route system integration
 
 ## Phase 3 — Accessibility & Optimization
 
-* Multilingual support
-* Offline-first improvements
-* UI optimization
-* Performance tuning
+- Multilingual support
+- Offline-first improvements
+- UI optimization
+- Performance tuning
 
 ## Phase 4 — Testing & Deployment
 
-* Bug fixing
-* Documentation
-* Compliance setup
-* Final deployment preparation
+- Bug fixing
+- Documentation
+- Compliance setup
+- Final deployment preparation
 
 ---
 
@@ -152,16 +152,16 @@ The platform was designed with accessibility and localization as important prior
 
 ### Accessibility Features
 
-* Clean navigation
-* Simple UI interactions
-* Multilingual accessibility
-* User-friendly dashboard
+- Clean navigation
+- Simple UI interactions
+- Multilingual accessibility
+- User-friendly dashboard
 
 ### Localization Features
 
-* Dynamic language switching
-* Multi-language support
-* Regional commuter inclusivity
+- Dynamic language switching
+- Multi-language support
+- Regional commuter inclusivity
 
 ---
 
@@ -171,9 +171,9 @@ The project follows an offline-first design approach wherever possible to ensure
 
 ### Offline Features
 
-* Lightweight local prediction logic
-* Cached transport information
-* Reduced dependency on cloud APIs
+- Lightweight local prediction logic
+- Cached transport information
+- Reduced dependency on cloud APIs
 
 ---
 
@@ -181,13 +181,13 @@ The project follows an offline-first design approach wherever possible to ensure
 
 Future improvements planned for the platform include:
 
-* Government transport API integration
-* Live GPS synchronization
-* Smart ticket booking
-* Voice-enabled AI assistant
-* Emergency safety integration
-* Real-time traffic analytics
-* Cloud-based transport management
+- Government transport API integration
+- Live GPS synchronization
+- Smart ticket booking
+- Voice-enabled AI assistant
+- Emergency safety integration
+- Real-time traffic analytics
+- Cloud-based transport management
 
 ---
 

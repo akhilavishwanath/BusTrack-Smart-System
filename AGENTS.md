@@ -18,10 +18,10 @@ The project follows a modular AI-assisted development architecture for efficient
 
 Responsible for:
 
-* live bus tracking
-* route monitoring
-* GPS simulation
-* location updates
+- live bus tracking
+- route monitoring
+- GPS simulation
+- location updates
 
 ---
 
@@ -29,10 +29,10 @@ Responsible for:
 
 Responsible for:
 
-* occupancy analysis
-* crowd estimation
-* peak-hour prediction
-* travel density analysis
+- occupancy analysis
+- crowd estimation
+- peak-hour prediction
+- travel density analysis
 
 ---
 
@@ -40,9 +40,9 @@ Responsible for:
 
 Responsible for:
 
-* arrival time prediction
-* route delay analysis
-* speed estimation
+- arrival time prediction
+- route delay analysis
+- speed estimation
 
 ---
 
@@ -50,9 +50,9 @@ Responsible for:
 
 Responsible for:
 
-* emergency alerts
-* route safety warnings
-* abnormal activity monitoring
+- emergency alerts
+- route safety warnings
+- abnormal activity monitoring
 
 ---
 
@@ -60,10 +60,10 @@ Responsible for:
 
 Responsible for:
 
-* transport analytics
-* dashboard insights
-* performance monitoring
-* reporting
+- transport analytics
+- dashboard insights
+- performance monitoring
+- reporting
 
 ---
 
@@ -89,23 +89,23 @@ Dashboard / Mobile App
 
 ## 📱 Frontend
 
-* React Native
-* Expo
+- React Native
+- Expo
 
 ## ⚙️ Backend
 
-* FastAPI
-* Python
+- FastAPI
+- Python
 
 ## 🗄️ Database
 
-* Firebase / MongoDB
+- Firebase / MongoDB
 
 ## 🤖 AI/ML
 
-* Python
-* Predictive Analytics
-* TensorFlow (Future Scope)
+- Python
+- Predictive Analytics
+- TensorFlow (Future Scope)
 
 ---
 

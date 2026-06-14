@@ -1,34 +1,41 @@
 {
-	"name": "bustrack-smart",
-	"private": true,
-	"scripts": {
-		"start": "expo start",
-		"android": "expo start --android",
-		"ios": "expo start --ios",
-		"web": "expo start --web",
-		"test": "jest",
-		"coverage": "jest --coverage",
-		"biome:check": "biome check .",
-		"biome:format": "biome format . --write",
+  "name": "bustrack-smart",
+  "private": true,
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "type_check": "knip",
+    "test": "jest",
+    "coverage": "jest --coverage",
     "biome": "npx @biomejs/biome check .",
-		"audit": "npm audit",
-		"scan:secrets": "echo Secret scan completed"
-	},
-	"dependencies": {
-		"@react-navigation/native": "^7.3.0",
-		"axios": "^1.17.0",
-		"expo": "^54.0.35",
-		"react-native-maps": "1.20.1"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^2.5.0",
-		"eslint": "^10.5.0",
-		"git-cliff": "^2.13.1",
-		"gitleaks": "^1.0.0",
-		"husky": "^9.1.7",
-		"jest": "^30.4.2",
-		"knip": "^6.16.1",
-		"oxlint": "^1.69.0",
-		"prettier": "^3.8.4"
-	}
+    "biome:check": "biome check .",
+    "biome:format": "biome format . --write",
+    "audit": "npm audit",
+    "scan:secrets": "echo Secret scan completed"
+  },
+  "dependencies": {
+    "@react-navigation/native": "^7.3.0",
+    "axios": "^1.17.0",
+    "expo": "^54.0.35",
+    "react-native-maps": "1.20.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.0",
+    "@eslint/js": "^9.39.4",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react": "^7.37.5",
+    "git-cliff": "^2.13.1",
+    "gitleaks": "^1.0.0",
+    "globals": "^17.6.0",
+    "husky": "^9.1.7",
+    "jest": "^30.4.2",
+    "knip": "^6.16.1",
+    "oxlint": "^1.69.0",
+    "prettier": "^3.8.4",
+    "typescript-eslint": "^8.61.0"
+  }
 }

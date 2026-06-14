@@ -1,5 +1,30 @@
 stages:
+  - lint
+  - format
+  - type_check
   - test
+  - coverage
+
+lint-job:
+  stage: lint
+  image: node:18
+  script:
+    - npm install
+    - npm run lint
+
+format-job:
+  stage: format
+  image: node:18
+  script:
+    - npm install
+    - npm run format
+
+typecheck-job:
+  stage: type_check
+  image: node:18
+  script:
+    - npm install
+    - npm run type_check
 
 test-job:
   stage: test
@@ -7,3 +32,10 @@ test-job:
   script:
     - npm install
     - npm test
+
+coverage-job:
+  stage: coverage
+  image: node:18
+  script:
+    - npm install
+    - npm run coverage

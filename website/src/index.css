@@ -1,42 +1,42 @@
 * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html {
-	scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-	font-family: Arial, sans-serif;
-	background: linear-gradient(135deg, #020617, #0f172a, #1e293b);
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #020617, #0f172a, #1e293b);
 
-	color: white;
+  color: white;
 }
 
 .glass-card {
-	background: rgba(255, 255, 255, 0.05);
-	border: 1px solid rgba(255, 255, 255, 0.1);
-	backdrop-filter: blur(15px);
-	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-	border-radius: 20px;
-	transition: 0.3s;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  transition: 0.3s;
 }
 
 .glass-card:hover {
-	transform: translateY(-10px);
+  transform: translateY(-10px);
 }
 @media (max-width: 768px) {
-	h1 {
-		font-size: 35px;
-	}
+  h1 {
+    font-size: 35px;
+  }
 
-	h2 {
-		font-size: 25px;
-	}
+  h2 {
+    font-size: 25px;
+  }
 
-	p {
-		font-size: 16px;
-	}
+  p {
+    font-size: 16px;
+  }
 }

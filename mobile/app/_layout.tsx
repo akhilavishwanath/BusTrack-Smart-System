@@ -1,54 +1,54 @@
 import {
-	DarkTheme,
-	DefaultTheme,
-	ThemeProvider,
-} from "@react-navigation/native";
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from '@react-navigation/native';
 
-import { Stack } from "expo-router";
+import { Stack } from 'expo-router';
 
-import { StatusBar } from "expo-status-bar";
+import { StatusBar } from 'expo-status-bar';
 
-import "react-native-reanimated";
+import 'react-native-reanimated';
 
-import { LanguageProvider } from "../context/LanguageContext";
-import { useColorScheme } from "../hooks/use-color-scheme";
+import { LanguageProvider } from '../context/LanguageContext';
+import { useColorScheme } from '../hooks/use-color-scheme';
 
 export const unstable_settings = {
-	anchor: "(tabs)",
+  anchor: '(tabs)',
 };
 
 export default function RootLayout() {
-	const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme();
 
-	return (
-		<LanguageProvider>
-			<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-				<Stack>
-					<Stack.Screen
-						name="(tabs)"
-						options={{
-							headerShown: false,
-						}}
-					/>
+  return (
+    <LanguageProvider>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen
+            name="(tabs)"
+            options={{
+              headerShown: false,
+            }}
+          />
 
-					<Stack.Screen
-						name="modal"
-						options={{
-							presentation: "modal",
-							title: "Modal",
-						}}
-					/>
+          <Stack.Screen
+            name="modal"
+            options={{
+              presentation: 'modal',
+              title: 'Modal',
+            }}
+          />
 
-					<Stack.Screen
-						name="map"
-						options={{
-							headerShown: false,
-						}}
-					/>
-				</Stack>
+          <Stack.Screen
+            name="map"
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack>
 
-				<StatusBar style="auto" />
-			</ThemeProvider>
-		</LanguageProvider>
-	);
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </LanguageProvider>
+  );
 }

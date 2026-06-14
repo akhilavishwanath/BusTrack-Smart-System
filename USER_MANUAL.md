@@ -20,9 +20,9 @@ The application improves public transportation efficiency using AI-powered analy
 
 Users can:
 
-* search buses
-* view live locations
-* track routes on maps
+- search buses
+- view live locations
+- track routes on maps
 
 ---
 
@@ -30,9 +30,9 @@ Users can:
 
 The system predicts estimated arrival times using:
 
-* route analysis
-* traffic conditions
-* bus speed
+- route analysis
+- traffic conditions
+- bus speed
 
 ---
 
@@ -52,9 +52,9 @@ This helps commuters avoid overcrowded buses.
 
 The platform recommends:
 
-* faster routes
-* less crowded buses
-* efficient travel options
+- faster routes
+- less crowded buses
+- efficient travel options
 
 ---
 
@@ -62,9 +62,9 @@ The platform recommends:
 
 Users receive:
 
-* route alerts
-* overcrowding warnings
-* emergency notifications
+- route alerts
+- overcrowding warnings
+- emergency notifications
 
 ---
 
@@ -72,10 +72,10 @@ Users receive:
 
 Admins can:
 
-* monitor buses
-* track occupancy
-* analyze transport usage
-* monitor route performance
+- monitor buses
+- track occupancy
+- analyze transport usage
+- monitor route performance
 
 ---
 
@@ -89,9 +89,9 @@ Open the BusTrack Smart application.
 
 Search for:
 
-* bus number
-* destination
-* route
+- bus number
+- destination
+- route
 
 ---
 
@@ -99,10 +99,10 @@ Search for:
 
 View:
 
-* live bus location
-* ETA
-* occupancy level
-* route map
+- live bus location
+- ETA
+- occupancy level
+- route map
 
 ---
 
