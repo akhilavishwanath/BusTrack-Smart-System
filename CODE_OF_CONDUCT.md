@@ -10,21 +10,21 @@ We as contributors and maintainers pledge to create an open, welcoming, respectf
 
 Examples of behavior that contributes to a positive environment include:
 
-* Respectful communication
-* Constructive feedback
-* Encouraging collaboration
-* Supporting new contributors
-* Maintaining professionalism
-* Being patient and inclusive
+- Respectful communication
+- Constructive feedback
+- Encouraging collaboration
+- Supporting new contributors
+- Maintaining professionalism
+- Being patient and inclusive
 
 Examples of unacceptable behavior include:
 
-* Harassment or discrimination
-* Offensive or harmful language
-* Personal attacks
-* Public shaming
-* Sharing private information without permission
-* Disruptive or toxic behavior
+- Harassment or discrimination
+- Offensive or harmful language
+- Personal attacks
+- Public shaming
+- Sharing private information without permission
+- Disruptive or toxic behavior
 
 ---
 
@@ -40,12 +40,12 @@ Maintainers may remove or reject comments, commits, code, documentation, or cont
 
 This Code of Conduct applies within all project spaces including:
 
-* GitHub repositories
-* Discussions
-* Pull requests
-* Documentation
-* Community forums
-* Hackathon collaboration environments
+- GitHub repositories
+- Discussions
+- Pull requests
+- Documentation
+- Community forums
+- Hackathon collaboration environments
 
 ---
 

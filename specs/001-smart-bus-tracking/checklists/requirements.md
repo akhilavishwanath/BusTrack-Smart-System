@@ -65,5 +65,6 @@ All quality criteria have been met. The specification is comprehensive, unambigu
 ### Ready for Next Steps
 
 This specification is ready for:
+
 - `/speckit.clarify` if any questions remain from stakeholders
 - `/speckit.plan` to move directly to implementation planning

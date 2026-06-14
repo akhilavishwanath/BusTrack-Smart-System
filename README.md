@@ -49,13 +49,12 @@ Most existing transport systems lack:
 
 # 🎯 Objectives
 
-* 🚍 Improve public transportation experience
-* ⏱️ Reduce commuter waiting time
-* 👥 Avoid overcrowded buses
-* 🗺️ Provide optimized route suggestions
-* 🌐 Support multilingual accessibility
-* 📊 Support smart-city transportation systems
-* 🔒 Improve commuter safety
+- 🚍 Improve public transport experience
+- ⏱️ Reduce passenger waiting time
+- 👥 Avoid overcrowded buses
+- 🗺️ Provide smarter route suggestions
+- 🏙️ Support smart-city transportation systems
+- 🔒 Improve commuter safety
 
 ---
 
@@ -77,9 +76,9 @@ Predict accurate bus arrival timings using intelligent transport analytics.
 
 Analyze and predict occupancy levels:
 
-* 🟢 Low Crowd
-* 🟡 Moderate Crowd
-* 🔴 High Crowd
+- 🟢 Low Crowd
+- 🟡 Moderate Crowd
+- 🔴 High Crowd
 
 ---
 
@@ -87,33 +86,9 @@ Analyze and predict occupancy levels:
 
 Suggest:
 
-* faster routes,
-* less crowded buses,
-* efficient travel alternatives.
-
----
-
-## 🌐 Multilingual Support
-
-Supports multiple regional languages:
-
-* English
-* Telugu
-* Hindi
-* Urdu
-
----
-
-## 🤖 AI Chatbot Assistance
-
-Provides:
-
-* route guidance,
-* ETA assistance,
-* bus information,
-* crowd prediction support.
-
----
+- faster routes,
+- less crowded buses,
+- efficient travel options.
 
 ## 🚨 Safety Alerts
 
@@ -125,11 +100,10 @@ Provide commuter safety notifications and route alerts.
 
 Transport authorities can monitor:
 
-* buses,
-* crowd analytics,
-* transport efficiency,
-* commuter trends,
-* route performance.
+- buses,
+- crowd analytics,
+- route efficiency,
+- transport performance.
 
 ---
 
@@ -137,37 +111,24 @@ Transport authorities can monitor:
 
 ## 📱 Mobile Application
 
-* ⚛️ React Native
-* 📱 Expo
-
----
-
-## 🌐 Website Dashboard
-
-* ⚛️ React.js
-* 🎨 Tailwind CSS
-
----
+- ⚛️ React.js / Next.js
+- 🎨 Tailwind CSS
+- 🗺️ Leaflet Maps
 
 ## ⚙️ Backend
 
-* 🟢 Node.js
-* 🚀 Express.js
-
----
+- 🐍 Python FastAPI
 
 ## 🗄️ Database
 
-* 🗃️ SQLite
+- 🔥 Firebase / MongoDB
 
 ---
 
 ## 🤖 AI / ML
 
-* 📈 Predictive Analytics
-* 🧠 Crowd Prediction Logic
-* ⏱️ ETA Prediction Models
-* 📊 Smart Transport Analytics
+- 📈 Predictive Analytics
+- 🧠 Occupancy Prediction Logic
 
 ---
 
@@ -286,8 +247,8 @@ npm start
 
 # 👨‍💻 Contributors
 
-* 👩‍💻 Akhila Vishwanath
-* 👨‍💻 Sanjay Jyothi
+- Akhila Vishwanath
+- Sanjay Jyothi
 
 ---
 
@@ -300,6 +261,8 @@ npm start
 
 # 📜 License
 
-This project is licensed under the **GNU AGPLv3 License**.
+This project is developed for educational and hackathon purposes.
 
-Developed for educational, research, and hackathon purposes.
+---
+
+# ❤️ Made with Innovation for Smarter Public Transport

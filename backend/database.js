@@ -1,17 +1,17 @@
-const sqlite3 = require("sqlite3").verbose();
+const sqlite3 = require('sqlite3').verbose();
 
-const db = new sqlite3.Database("./database.db", (err) => {
-	if (err) {
-		console.log("Database Error:", err);
-	} else {
-		console.log("SQLite Database Connected");
-	}
+const db = new sqlite3.Database('./database.db', (err) => {
+  if (err) {
+    console.log('Database Error:', err);
+  } else {
+    console.log('SQLite Database Connected');
+  }
 });
 
 // CREATE USERS TABLE
 
 db.serialize(() => {
-	db.run(`
+  db.run(`
 
     CREATE TABLE IF NOT EXISTS users (
 

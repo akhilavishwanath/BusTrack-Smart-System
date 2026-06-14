@@ -4,8 +4,8 @@
 
 The following versions of BusTrack Smart are currently supported with security updates.
 
-| Version | Supported   |
-| ------- | ----------- |
+| Version | Supported    |
+| ------- | ------------ |
 | 1.0.0   | ✅ Supported |
 
 ---
@@ -18,10 +18,10 @@ We encourage responsible disclosure practices and request that vulnerabilities a
 
 Please include:
 
-* Detailed explanation of the issue
-* Steps to reproduce the vulnerability
-* Expected impact
-* Screenshots or logs if applicable
+- Detailed explanation of the issue
+- Steps to reproduce the vulnerability
+- Expected impact
+- Screenshots or logs if applicable
 
 ---
 
@@ -35,9 +35,9 @@ Sensitive configuration values are managed through environment variables instead
 
 ## Secure Repository Structure
 
-* `.gitignore` prevents accidental exposure of sensitive files
-* Docker ignore policies reduce unnecessary exposure
-* Modular architecture minimizes attack surface
+- `.gitignore` prevents accidental exposure of sensitive files
+- Docker ignore policies reduce unnecessary exposure
+- Modular architecture minimizes attack surface
 
 ## Dependency Management
 
@@ -47,12 +47,12 @@ Project dependencies are monitored and updated regularly to reduce known vulnera
 
 Planned future enhancements include:
 
-* OAuth-based authentication
-* Secure cloud database integration
-* API rate limiting
-* End-to-end encrypted communication
-* Role-based admin access
-* Secure token handling
+- OAuth-based authentication
+- Secure cloud database integration
+- API rate limiting
+- End-to-end encrypted communication
+- Role-based admin access
+- Secure token handling
 
 ---
 

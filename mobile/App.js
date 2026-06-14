@@ -1,7 +1,7 @@
-import "react-native-gesture-handler";
+import 'react-native-gesture-handler';
 
-import BottomTabs from "./navigation/BottomTabs";
+import BottomTabs from './navigation/BottomTabs';
 
 export default function App() {
-	return <BottomTabs />;
+  return <BottomTabs />;
 }
