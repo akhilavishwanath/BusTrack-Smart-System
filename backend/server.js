@@ -1,20 +1,19 @@
-const express = require('express');
-const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
-const csv = require('csv-parser');
+const express = require("express");
+const cors = require("cors");
+const fs = require("fs");
+const path = require("node:path");
+const csv = require("csv-parser");
 
-const db = require('./database');
+const db = require("./database");
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || '0.0.0.0';
+const HOST = process.env.HOST || "0.0.0.0";
 
-const DATA_DIR = path.join(__dirname, 'data');
+const DATA_DIR = path.join(__dirname, "data");
 
-const ROUTES_FILE =
-  path.join(DATA_DIR, 'routes.csv');
+const ROUTES_FILE = path.join(DATA_DIR, "routes.csv");
 
 app.use(cors());
 
@@ -25,562 +24,325 @@ const routes = [];
 // CROWD
 
 function crowdForRoute(route, index = 0) {
+	const seed = `${route.route}-${route.route_id}-${index}`;
 
-  const seed =
-    `${route.route}-${route.route_id}-${index}`;
+	const score =
+		seed.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0) % 100;
 
-  const score =
-    seed
-      .split('')
-      .reduce(
-        (sum, char) =>
-          sum + char.charCodeAt(0),
-        0
-      ) % 100;
+	if (score > 82) return "Very High";
 
-  if (score > 82)
-    return 'Very High';
+	if (score > 58) return "High";
 
-  if (score > 58)
-    return 'High';
+	if (score > 28) return "Medium";
 
-  if (score > 28)
-    return 'Medium';
-
-  return 'Low';
-
+	return "Low";
 }
 
 // ETA
 
 function etaForCrowd(crowd, index = 0) {
+	const base = (index + 1) * 3;
 
-  const base =
-    (index + 1) * 3;
+	const delay =
+		{
+			Low: 0,
+			Medium: 2,
+			High: 5,
+			"Very High": 8,
+		}[crowd] || 2;
 
-  const delay = {
-
-    Low: 0,
-    Medium: 2,
-    High: 5,
-    'Very High': 8,
-
-  }[crowd] || 2;
-
-  return base + delay;
-
+	return base + delay;
 }
 
 // ROUTE → BUS
 
 function routeToBus(route, index = 0) {
+	const crowd = crowdForRoute(route, index);
 
-  const crowd =
-    crowdForRoute(
-      route,
-      index
-    );
+	const [origin = "Hyderabad", destination = "Hyderabad"] = (
+		route.origin_destination || ""
+	).split(" TO ");
 
-  const [
-    origin = 'Hyderabad',
-    destination = 'Hyderabad',
-  ] =
-    (
-      route.origin_destination || ''
-    ).split(' TO ');
+	return {
+		number: route.route,
 
-  return {
+		routeId: route.route_id,
 
-    number:
-      route.route,
+		origin: origin.trim(),
 
-    routeId:
-      route.route_id,
+		destination: destination.trim(),
 
-    origin:
-      origin.trim(),
+		originDestination: route.origin_destination,
 
-    destination:
-      destination.trim(),
+		crowd,
 
-    originDestination:
-      route.origin_destination,
+		etaMinutes: etaForCrowd(crowd, index),
 
-    crowd,
-
-    etaMinutes:
-      etaForCrowd(
-        crowd,
-        index
-      ),
-
-    occupancyPercent: {
-
-      Low: 28,
-      Medium: 54,
-      High: 76,
-      'Very High': 92,
-
-    }[crowd],
-
-  };
-
+		occupancyPercent: {
+			Low: 28,
+			Medium: 54,
+			High: 76,
+			"Very High": 92,
+		}[crowd],
+	};
 }
 
 // FALLBACK ROUTE
 
 function fallbackRouteStops(route) {
+	const bus = routeToBus(route);
 
-  const bus =
-    routeToBus(route);
+	const stops = [
+		{
+			stop: bus.origin || "Origin",
 
-  const stops = [
+			latitude: 17.385,
 
-    {
-      stop:
-        bus.origin || 'Origin',
+			longitude: 78.4867,
+		},
 
-      latitude:
-        17.385,
+		{
+			stop: "Koti",
 
-      longitude:
-        78.4867,
-    },
+			latitude: 17.3859,
 
-    {
-      stop: 'Koti',
+			longitude: 78.4809,
+		},
 
-      latitude:
-        17.3859,
+		{
+			stop: "Lakdikapul",
 
-      longitude:
-        78.4809,
-    },
+			latitude: 17.4062,
 
-    {
-      stop: 'Lakdikapul',
+			longitude: 78.4653,
+		},
 
-      latitude:
-        17.4062,
+		{
+			stop: "Ameerpet",
 
-      longitude:
-        78.4653,
-    },
+			latitude: 17.4375,
 
-    {
-      stop: 'Ameerpet',
+			longitude: 78.4483,
+		},
 
-      latitude:
-        17.4375,
+		{
+			stop: bus.destination || "Destination",
 
-      longitude:
-        78.4483,
-    },
+			latitude: 17.4474,
 
-    {
-      stop:
-        bus.destination ||
-        'Destination',
+			longitude: 78.3762,
+		},
+	];
 
-      latitude:
-        17.4474,
+	return stops.map((stop, index) => ({
+		...stop,
 
-      longitude:
-        78.3762,
-    },
+		crowd: crowdForRoute(route, index),
 
-  ];
-
-  return stops.map(
-    (stop, index) => ({
-
-      ...stop,
-
-      crowd:
-        crowdForRoute(
-          route,
-          index
-        ),
-
-      etaMinutes:
-        etaForCrowd(
-          crowdForRoute(
-            route,
-            index
-          ),
-          index
-        ),
-
-    })
-  );
-
+		etaMinutes: etaForCrowd(crowdForRoute(route, index), index),
+	}));
 }
 
 // FIND ROUTE
 
 function findRouteByNumber(busNumber) {
+	const normalizedBusNumber = busNumber.toLowerCase();
 
-  const normalizedBusNumber =
-    busNumber.toLowerCase();
-
-  return routes.find(
-
-    (route) =>
-
-      route.route
-        .toLowerCase() ===
-      normalizedBusNumber
-
-  );
-
+	return routes.find(
+		(route) => route.route.toLowerCase() === normalizedBusNumber,
+	);
 }
 
 // LOAD CSV
 
-fs.createReadStream(
-  ROUTES_FILE
-)
+fs.createReadStream(ROUTES_FILE)
 
-  .pipe(csv())
+	.pipe(csv())
 
-  .on('data', (data) => {
+	.on("data", (data) => {
+		routes.push(data);
+	})
 
-    routes.push(data);
-
-  })
-
-  .on('end', () => {
-
-    console.log(
-      `CSV loaded successfully: ${routes.length} routes`
-    );
-
-  });
+	.on("end", () => {
+		console.log(`CSV loaded successfully: ${routes.length} routes`);
+	});
 
 // HOME
 
-app.get('/', (req, res) => {
+app.get("/", (_req, res) => {
+	res.json({
+		message: "Hyderabad Bus API Running",
 
-  res.json({
-
-    message:
-      'Hyderabad Bus API Running',
-
-    routes:
-      routes.length,
-
-  });
-
+		routes: routes.length,
+	});
 });
 
 // ROUTES
 
-app.get('/routes', (req, res) => {
-
-  res.json(
-    routes.map(routeToBus)
-  );
-
+app.get("/routes", (_req, res) => {
+	res.json(routes.map(routeToBus));
 });
 
 // DASHBOARD
 
-app.get('/dashboard', (req, res) => {
+app.get("/dashboard", (_req, res) => {
+	const buses = routes.slice(0, 12).map(routeToBus);
 
-  const buses =
-    routes
-      .slice(0, 12)
-      .map(routeToBus);
+	const crowdSummary = buses.reduce(
+		(summary, bus) => ({
+			...summary,
 
-  const crowdSummary =
-    buses.reduce(
+			[bus.crowd]: (summary[bus.crowd] || 0) + 1,
+		}),
 
-      (summary, bus) => ({
+		{},
+	);
 
-        ...summary,
+	res.json({
+		city: "Hyderabad",
 
-        [bus.crowd]:
-          (summary[bus.crowd] || 0) + 1,
+		totalRoutes: routes.length,
 
-      }),
+		activeBuses: Math.min(routes.length, 128),
 
-      {}
+		averageEtaMinutes: Math.round(
+			buses.reduce((sum, bus) => sum + bus.etaMinutes, 0) /
+				Math.max(buses.length, 1),
+		),
 
-    );
+		crowdSummary,
 
-  res.json({
-
-    city: 'Hyderabad',
-
-    totalRoutes:
-      routes.length,
-
-    activeBuses:
-      Math.min(
-        routes.length,
-        128
-      ),
-
-    averageEtaMinutes:
-      Math.round(
-
-        buses.reduce(
-          (sum, bus) =>
-            sum + bus.etaMinutes,
-          0
-        ) /
-
-        Math.max(
-          buses.length,
-          1
-        )
-
-      ),
-
-    crowdSummary,
-
-    featuredRoutes:
-      buses,
-
-  });
-
+		featuredRoutes: buses,
+	});
 });
 
 // SEARCH
 
-app.get(
-  '/search/:busNumber',
-  (req, res) => {
+app.get("/search/:busNumber", (req, res) => {
+	const busNumber = req.params.busNumber.toLowerCase();
 
-    const busNumber =
-      req.params.busNumber
-        .toLowerCase();
+	const filteredRoutes = routes
 
-    const filteredRoutes =
-      routes
+		.filter((route) => route.route.toLowerCase().includes(busNumber))
 
-        .filter(
+		.slice(0, 25)
 
-          (route) =>
+		.map(routeToBus);
 
-            route.route
-              .toLowerCase()
-              .includes(busNumber)
-
-        )
-
-        .slice(0, 25)
-
-        .map(routeToBus);
-
-    res.json(filteredRoutes);
-
-  }
-);
+	res.json(filteredRoutes);
+});
 
 // FULL ROUTE
 
-app.get(
-  '/fullroute/:busNumber',
-  (req, res) => {
+app.get("/fullroute/:busNumber", (req, res) => {
+	const foundRoute = findRouteByNumber(req.params.busNumber);
 
-    const foundRoute =
-      findRouteByNumber(
-        req.params.busNumber
-      );
+	if (!foundRoute) {
+		return res.status(404).json({
+			error: "Bus route not found",
+		});
+	}
 
-    if (!foundRoute) {
+	const filePath = path.join(
+		__dirname,
 
-      return res
-        .status(404)
-        .json({
+		"hyd-bus-data",
 
-          error:
-            'Bus route not found',
+		"route_stops_order",
 
-        });
+		`${foundRoute.route_id}.csv`,
+	);
 
-    }
+	if (!fs.existsSync(filePath)) {
+		return res.json({
+			bus: routeToBus(foundRoute),
 
-    const filePath =
-      path.join(
+			stops: fallbackRouteStops(foundRoute),
+		});
+	}
 
-        __dirname,
+	const stops = [];
 
-        'hyd-bus-data',
+	fs.createReadStream(filePath)
 
-        'route_stops_order',
+		.pipe(
+			csv({
+				headers: false,
+			}),
+		)
 
-        `${foundRoute.route_id}.csv`
+		.on("data", (row) => {
+			const index = stops.length;
 
-      );
+			const crowd = crowdForRoute(foundRoute, index);
 
-    if (
-      !fs.existsSync(filePath)
-    ) {
+			stops.push({
+				stop: row[3],
 
-      return res.json({
+				latitude: Number(row[1]),
 
-        bus:
-          routeToBus(foundRoute),
+				longitude: Number(row[2]),
 
-        stops:
-          fallbackRouteStops(
-            foundRoute
-          ),
+				crowd,
 
-      });
+				etaMinutes: etaForCrowd(crowd, index),
+			});
+		})
 
-    }
+		.on("end", () => {
+			res.json({
+				bus: routeToBus(foundRoute),
 
-    const stops = [];
-
-    fs.createReadStream(filePath)
-
-      .pipe(
-        csv({
-          headers: false,
-        })
-      )
-
-      .on('data', (row) => {
-
-        const index =
-          stops.length;
-
-        const crowd =
-          crowdForRoute(
-            foundRoute,
-            index
-          );
-
-        stops.push({
-
-          stop:
-            row[3],
-
-          latitude:
-            Number(row[1]),
-
-          longitude:
-            Number(row[2]),
-
-          crowd,
-
-          etaMinutes:
-            etaForCrowd(
-              crowd,
-              index
-            ),
-
-        });
-
-      })
-
-      .on('end', () => {
-
-        res.json({
-
-          bus:
-            routeToBus(foundRoute),
-
-          stops,
-
-        });
-
-      });
-
-  }
-);
+				stops,
+			});
+		});
+});
 
 // PREDICTIONS
 
-app.get('/predictions', (req, res) => {
+app.get("/predictions", (req, res) => {
+	const busNumber = req.query.busNumber;
 
-  const busNumber =
-    req.query.busNumber;
+	const sourceRoutes = busNumber
+		? routes.filter((route) => route.route === busNumber)
+		: routes;
 
-  const sourceRoutes =
-    busNumber
+	res.json(
+		sourceRoutes
 
-      ? routes.filter(
+			.slice(0, 30)
 
-          (route) =>
+			.map((route, index) => {
+				const bus = routeToBus(route, index);
 
-            route.route ===
-            busNumber
+				return {
+					...bus,
 
-        )
-
-      : routes;
-
-  res.json(
-
-    sourceRoutes
-
-      .slice(0, 30)
-
-      .map((route, index) => {
-
-        const bus =
-          routeToBus(
-            route,
-            index
-          );
-
-        return {
-
-          ...bus,
-
-          recommendation:
-
-            bus.crowd ===
-            'Very High'
-
-              ? 'Try the next bus.'
-
-              : bus.crowd ===
-                'High'
-
-                ? 'Seats may be limited.'
-
-                : 'Good time to travel.',
-
-        };
-
-      })
-
-  );
-
+					recommendation:
+						bus.crowd === "Very High"
+							? "Try the next bus."
+							: bus.crowd === "High"
+								? "Seats may be limited."
+								: "Good time to travel.",
+				};
+			}),
+	);
 });
 
 // SQLITE LOGIN
 
-app.post('/auth/login', (req, res) => {
+app.post("/auth/login", (req, res) => {
+	const { name, email, phone } = req.body;
 
-  const {
+	if (!email) {
+		return res.status(400).json({
+			error: "Email required",
+		});
+	}
 
-    name,
-    email,
-    phone,
+	const createdAt = new Date().toISOString();
 
-  } = req.body;
-
-  if (!email) {
-
-    return res.status(400).json({
-
-      error:
-        'Email required',
-
-    });
-
-  }
-
-  const createdAt =
-    new Date().toISOString();
-
-  const query = `
+	const query = `
 
     INSERT OR REPLACE INTO users
 
@@ -590,90 +352,53 @@ app.post('/auth/login', (req, res) => {
 
   `;
 
-  db.run(
+	db.run(
+		query,
 
-    query,
+		[name, email, phone, createdAt],
 
-    [
-      name,
-      email,
-      phone,
-      createdAt,
-    ],
+		function (err) {
+			if (err) {
+				console.log(err);
 
-    function (err) {
+				return res.status(500).json({
+					error: "Database error",
+				});
+			}
 
-      if (err) {
+			res.json({
+				success: true,
 
-        console.log(err);
+				user: {
+					id: this.lastID,
 
-        return res.status(500).json({
-
-          error:
-            'Database error',
-
-        });
-
-      }
-
-      res.json({
-
-        success: true,
-
-        user: {
-
-          id:
-            this.lastID,
-
-          name,
-          email,
-          phone,
-
-        },
-
-      });
-
-    }
-
-  );
-
+					name,
+					email,
+					phone,
+				},
+			});
+		},
+	);
 });
 
 // CHATBOT
 
-app.post('/chatbot', (req, res) => {
+app.post("/chatbot", (req, res) => {
+	const message = String(req.body.message || "").trim();
 
-  const message =
-    String(
-      req.body.message || ''
-    ).trim();
+	if (!message) {
+		return res.json({
+			reply: "Ask me about routes, ETA, tracking or crowd prediction.",
+		});
+	}
 
-  if (!message) {
-
-    return res.json({
-
-      reply:
-        'Ask me about routes, ETA, tracking or crowd prediction.',
-
-    });
-
-  }
-
-  return res.json({
-
-    reply:
-      `You asked: ${message}`,
-
-  });
-
+	return res.json({
+		reply: `You asked: ${message}`,
+	});
 });
 
 // SERVER
 
 app.listen(PORT, HOST, () => {
-
-  console.log(
-    `Server running at http://${HOST}:${PORT}`
-  );
-
+	console.log(`Server running at http://${HOST}:${PORT}`);
 });
