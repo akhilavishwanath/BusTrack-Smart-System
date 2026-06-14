@@ -7,7 +7,7 @@ stages:
 
 lint-job:
   stage: lint
-  image: node:18
+  image: node:20
   script:
     - npm install
     - npm run lint
@@ -21,21 +21,21 @@ format-job:
 
 typecheck-job:
   stage: type_check
-  image: node:18
+  image: node:20
   script:
     - npm install
     - npm run type_check
 
 test-job:
   stage: test
-  image: node:18
+  image: node:20
   script:
     - npm install
     - npm test
 
 coverage-job:
   stage: coverage
-  image: node:18
+  image: node:20
   script:
     - npm install
     - npm run coverage
