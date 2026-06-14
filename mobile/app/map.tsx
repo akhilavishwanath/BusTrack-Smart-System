@@ -1,130 +1,74 @@
 /* eslint-disable */
 
-import React, {
-  useEffect,
-  useState,
-} from 'react';
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
+import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 
-import {
-  View,
- Text,
-  StyleSheet,
-  Platform,
-  Pressable,
-} from 'react-native';
-
-import {
-  useLocalSearchParams,
-  router,
-} from 'expo-router';
-
-import {
-  getFullRoute,
-} from '../services/api';
+import { getFullRoute } from "../services/api";
 
 declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      iframe: any;
-    }
-  }
+	namespace JSX {
+		interface IntrinsicElements {
+			iframe: any;
+		}
+	}
 }
 
 export default function MapScreen() {
+	const { bus } = useLocalSearchParams();
 
-  const { bus } =
-    useLocalSearchParams();
+	const [html, setHtml] = useState("");
 
-  const [html, setHtml] =
-    useState('');
+	const [stops, setStops] = useState<any[]>([]);
 
-  const [stops, setStops] =
-    useState<any[]>([]);
+	const [currentIndex, setCurrentIndex] = useState(0);
 
-  const [currentIndex, setCurrentIndex] =
-    useState(0);
+	// LOAD ROUTE
 
-  // LOAD ROUTE
+	useEffect(() => {
+		if (!bus) return;
 
-  useEffect(() => {
+		getFullRoute(bus as string)
 
-    if (!bus) return;
+			.then((data) => {
+				try {
+					const cleanStops = (data.stops || []).filter((s: any) => {
+						const lat = Number(s.latitude);
 
-    getFullRoute(bus as string)
+						const lng = Number(s.longitude);
 
-      .then((data) => {
+						return (
+							!Number.isNaN(lat) &&
+							!Number.isNaN(lng) &&
+							lat !== 0 &&
+							lng !== 0 &&
+							lat > 10 &&
+							lng > 10
+						);
+					});
 
-        try {
+					setStops(cleanStops);
 
-          const cleanStops =
-            (data.stops || []).filter(
+					// INVALID ROUTE
 
-              (s: any) => {
+					if (cleanStops.length < 2) {
+						setHtml("");
 
-                const lat =
-                  Number(s.latitude);
+						return;
+					}
 
-                const lng =
-                  Number(s.longitude);
+					const polyline = JSON.stringify(
+						cleanStops.map((s: any) => [
+							Number(s.latitude),
+							Number(s.longitude),
+						]),
+					);
 
-                return (
+					const stopNames = JSON.stringify(
+						cleanStops.map((s: any) => String(s.stop || "Stop")),
+					);
 
-                  !isNaN(lat) &&
-                  !isNaN(lng) &&
-                  lat !== 0 &&
-                  lng !== 0 &&
-                  lat > 10 &&
-                  lng > 10
-
-                );
-
-              }
-
-            );
-
-          setStops(cleanStops);
-
-          // INVALID ROUTE
-
-          if (
-            cleanStops.length < 2
-          ) {
-
-            setHtml('');
-
-            return;
-
-          }
-
-          const polyline =
-            JSON.stringify(
-
-              cleanStops.map(
-                (s: any) => [
-
-                  Number(s.latitude),
-                  Number(s.longitude)
-
-                ]
-              )
-
-            );
-
-          const stopNames =
-            JSON.stringify(
-
-              cleanStops.map(
-                (s: any) =>
-
-                  String(
-                    s.stop || 'Stop'
-                  )
-
-              )
-
-            );
-
-          const generatedHtml = `
+					const generatedHtml = `
           <!DOCTYPE html>
 
           <html>
@@ -277,316 +221,203 @@ export default function MapScreen() {
           </html>
           `;
 
-          setHtml(generatedHtml);
+					setHtml(generatedHtml);
+				} catch (err) {
+					console.log("MAP ERROR", err);
 
-        } catch (err) {
+					setHtml("");
+				}
+			})
 
-          console.log(
-            'MAP ERROR',
-            err
-          );
+			.catch((err) => {
+				console.log("FETCH ERROR", err);
+			});
+	}, [bus]);
 
-          setHtml('');
+	// LIVE STOP UPDATE
 
-        }
+	useEffect(() => {
+		if (!stops.length) return;
 
-      })
+		const interval = setInterval(() => {
+			setCurrentIndex((prev) => {
+				if (prev + 1 >= stops.length) {
+					return 0;
+				}
 
-      .catch((err) => {
+				return prev + 1;
+			});
+		}, 3000);
 
-        console.log(
-          'FETCH ERROR',
-          err
-        );
+		return () => clearInterval(interval);
+	}, [stops]);
 
-      });
+	const currentStop = stops[currentIndex];
 
-  }, [bus]);
+	const nextStop = stops[(currentIndex + 1) % stops.length];
 
-  // LIVE STOP UPDATE
+	// CROWD
 
-  useEffect(() => {
+	const crowds = ["Low", "Medium", "High"];
 
-    if (!stops.length) return;
+	const crowd = crowds[currentIndex % crowds.length];
 
-    const interval =
-      setInterval(() => {
+	// TRAFFIC
 
-        setCurrentIndex((prev) => {
+	const trafficList = ["Low", "Moderate", "High"];
 
-          if (
-            prev + 1 >=
-            stops.length
-          ) {
+	const traffic = trafficList[currentIndex % trafficList.length];
 
-            return 0;
+	// ETA
 
-          }
+	const eta = 5 + currentIndex * 2;
 
-          return prev + 1;
+	return (
+		<View style={styles.container}>
+			{/* BACK BUTTON */}
 
-        });
+			<Pressable style={styles.backButton} onPress={() => router.back()}>
+				<Text style={styles.backText}>← Back</Text>
+			</Pressable>
 
-      }, 3000);
+			{/* HEADER */}
 
-    return () =>
-      clearInterval(interval);
+			<View style={styles.headerBox}>
+				<Text style={styles.busTitle}>🚌 {bus}</Text>
 
-  }, [stops]);
+				<Text style={styles.routeName}>
+					{stops.length > 0
+						? `${stops[0].stop.toUpperCase()} TO ${stops[stops.length - 1].stop.toUpperCase()} Live Tracking`
+						: "LIVE TRACKING"}
+				</Text>
+			</View>
 
-  const currentStop =
-    stops[currentIndex];
+			{/* MAP */}
 
-  const nextStop =
-    stops[
-      (currentIndex + 1) %
-      stops.length
-    ];
+			<View style={styles.mapContainer}>
+				{html ? (
+					Platform.OS === "web" ? (
+						<iframe
+							srcDoc={html}
+							style={{
+								width: "100%",
+								height: "100%",
+								border: "none",
+							}}
+							title="Bus Map"
+						/>
+					) : (
+						<Text style={styles.loading}>Map available on web only</Text>
+					)
+				) : (
+					<Text style={styles.loading}>Invalid Route Data</Text>
+				)}
+			</View>
 
-  // CROWD
+			{/* INFO BOX */}
 
-  const crowds = [
-    'Low',
-    'Medium',
-    'High',
-  ];
+			<View style={styles.infoBox}>
+				<Text style={styles.label}>📍 Current Stop</Text>
 
-  const crowd =
-    crowds[
-      currentIndex %
-      crowds.length
-    ];
+				<Text style={styles.value}>{currentStop?.stop || "Loading"}</Text>
 
-  // TRAFFIC
+				<Text style={styles.label}>➡ Next Stop</Text>
 
-  const trafficList = [
-    'Low',
-    'Moderate',
-    'High',
-  ];
+				<Text style={styles.value}>{nextStop?.stop || "Loading"}</Text>
 
-  const traffic =
-    trafficList[
-      currentIndex %
-      trafficList.length
-    ];
+				<Text style={styles.label}>👥 Crowd Prediction</Text>
 
-  // ETA
+				<Text style={styles.value}>{crowd}</Text>
 
-  const eta =
-    5 +
-    currentIndex * 2;
+				<Text style={styles.label}>🚦 Traffic Status</Text>
 
-  return (
+				<Text style={styles.value}>{traffic}</Text>
 
-    <View style={styles.container}>
-
-      {/* BACK BUTTON */}
-
-      <Pressable
-        style={styles.backButton}
-        onPress={() => router.back()}
-      >
-
-        <Text style={styles.backText}>
-          ← Back
-        </Text>
-
-      </Pressable>
-
-      {/* HEADER */}
-
-      <View style={styles.headerBox}>
-
-        <Text style={styles.busTitle}>
-          🚌 {bus}
-        </Text>
-
-        <Text style={styles.routeName}>
-          {
-            stops.length > 0
-
-              ? `${stops[0].stop.toUpperCase()} TO ${stops[stops.length - 1].stop.toUpperCase()} Live Tracking`
-
-              : 'LIVE TRACKING'
-          }
-        </Text>
-
-      </View>
-
-      {/* MAP */}
-
-      <View style={styles.mapContainer}>
-
-        {
-          html ? (
-
-            Platform.OS === 'web' ? (
-
-              <iframe
-                srcDoc={html}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  border: 'none',
-                }}
-                title="Bus Map"
-              />
-
-            ) : (
-
-              <Text style={styles.loading}>
-                Map available on web only
-              </Text>
-
-            )
-
-          ) : (
-
-            <Text style={styles.loading}>
-              Invalid Route Data
-            </Text>
-
-          )
-        }
-
-      </View>
-
-      {/* INFO BOX */}
-
-      <View style={styles.infoBox}>
-
-        <Text style={styles.label}>
-          📍 Current Stop
-        </Text>
-
-        <Text style={styles.value}>
-          {
-            currentStop?.stop ||
-            'Loading'
-          }
-        </Text>
-
-        <Text style={styles.label}>
-          ➡ Next Stop
-        </Text>
-
-        <Text style={styles.value}>
-          {
-            nextStop?.stop ||
-            'Loading'
-          }
-        </Text>
-
-        <Text style={styles.label}>
-          👥 Crowd Prediction
-        </Text>
-
-        <Text style={styles.value}>
-          {crowd}
-        </Text>
-
-        <Text style={styles.label}>
-          🚦 Traffic Status
-        </Text>
-
-        <Text style={styles.value}>
-          {traffic}
-        </Text>
-
-        <Text style={styles.eta}>
-          ETA: {eta} mins
-        </Text>
-
-      </View>
-
-    </View>
-
-  );
-
+				<Text style={styles.eta}>ETA: {eta} mins</Text>
+			</View>
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: "#020617",
+	},
 
-  container: {
-    flex: 1,
-    backgroundColor: '#020617',
-  },
+	backButton: {
+		marginTop: 45,
+		marginLeft: 20,
+	},
 
-  backButton: {
-    marginTop: 45,
-    marginLeft: 20,
-  },
+	backText: {
+		color: "white",
+		fontSize: 18,
+		fontWeight: "bold",
+	},
 
-  backText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
+	headerBox: {
+		width: "90%",
+		alignSelf: "center",
+		marginTop: 10,
+	},
 
-  headerBox: {
-    width: '90%',
-    alignSelf: 'center',
-    marginTop: 10,
-  },
+	busTitle: {
+		color: "white",
+		fontSize: 34,
+		fontWeight: "bold",
+	},
 
-  busTitle: {
-    color: 'white',
-    fontSize: 34,
-    fontWeight: 'bold',
-  },
+	routeName: {
+		color: "#22c55e",
+		fontSize: 18,
+		fontWeight: "bold",
+		marginTop: 5,
+	},
 
-  routeName: {
-    color: '#22c55e',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 5,
-  },
+	mapContainer: {
+		height: 320,
+		width: "90%",
+		alignSelf: "center",
+		marginTop: 20,
+		borderRadius: 25,
+		overflow: "hidden",
+	},
 
-  mapContainer: {
-    height: 320,
-    width: '90%',
-    alignSelf: 'center',
-    marginTop: 20,
-    borderRadius: 25,
-    overflow: 'hidden',
-  },
+	infoBox: {
+		width: "90%",
+		alignSelf: "center",
+		marginTop: 15,
+		backgroundColor: "#0f172a",
+		borderRadius: 25,
+		padding: 16,
+		marginBottom: 20,
+	},
 
-  infoBox: {
-    width: '90%',
-    alignSelf: 'center',
-    marginTop: 15,
-    backgroundColor: '#0f172a',
-    borderRadius: 25,
-    padding: 16,
-    marginBottom: 20,
-  },
+	label: {
+		color: "#94a3b8",
+		fontSize: 14,
+		marginTop: 6,
+	},
 
-  label: {
-    color: '#94a3b8',
-    fontSize: 14,
-    marginTop: 6,
-  },
+	value: {
+		color: "white",
+		fontSize: 18,
+		fontWeight: "bold",
+	},
 
-  value: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
+	eta: {
+		color: "#38bdf8",
+		fontSize: 18,
+		fontWeight: "bold",
+		marginTop: 12,
+	},
 
-  eta: {
-    color: '#38bdf8',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 12,
-  },
-
-  loading: {
-    color: 'white',
-    padding: 20,
-    textAlign: 'center',
-    marginTop: 120,
-    fontSize: 18,
-  },
-
+	loading: {
+		color: "white",
+		padding: 20,
+		textAlign: "center",
+		marginTop: 120,
+		fontSize: 18,
+	},
 });
