@@ -36,6 +36,7 @@
     "knip": "^6.16.1",
     "oxlint": "^1.69.0",
     "prettier": "^3.8.4",
+    "typescript": "^5.9.3",
     "typescript-eslint": "^8.61.0"
   }
 }

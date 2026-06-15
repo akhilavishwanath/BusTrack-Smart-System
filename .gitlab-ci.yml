@@ -24,8 +24,9 @@ typecheck-job:
   image: node:20
   script:
     - npm install
+    - npx tsc --noEmit
     - npx knip || true
-
+    
 test-job:
   stage: test
   image: node:20
