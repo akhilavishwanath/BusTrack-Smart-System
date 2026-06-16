@@ -1,18 +1,13 @@
-/* eslint-disable */
-
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
+
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+
+import { WebView } from 'react-native-webview';
 
 import { getFullRoute } from '../services/api';
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      iframe: any;
-    }
-  }
-}
+const IframeComponent: any = 'iframe';
 
 export default function MapScreen() {
   const { bus } = useLocalSearchParams();
@@ -48,11 +43,8 @@ export default function MapScreen() {
 
           setStops(cleanStops);
 
-          // INVALID ROUTE
-
           if (cleanStops.length < 2) {
             setHtml('');
-
             return;
           }
 
@@ -69,7 +61,6 @@ export default function MapScreen() {
 
           const generatedHtml = `
           <!DOCTYPE html>
-
           <html>
 
           <head>
@@ -91,6 +82,7 @@ export default function MapScreen() {
 
                 height: 100%;
                 margin: 0;
+                background: #020617;
 
               }
 
@@ -286,7 +278,9 @@ export default function MapScreen() {
 
         <Text style={styles.routeName}>
           {stops.length > 0
-            ? `${stops[0].stop.toUpperCase()} TO ${stops[stops.length - 1].stop.toUpperCase()} Live Tracking`
+            ? `${stops[0].stop.toUpperCase()} TO ${stops[
+                stops.length - 1
+              ].stop.toUpperCase()} Live Tracking`
             : 'LIVE TRACKING'}
         </Text>
       </View>
@@ -296,7 +290,7 @@ export default function MapScreen() {
       <View style={styles.mapContainer}>
         {html ? (
           Platform.OS === 'web' ? (
-            <iframe
+            <IframeComponent
               srcDoc={html}
               style={{
                 width: '100%',
@@ -306,7 +300,11 @@ export default function MapScreen() {
               title="Bus Map"
             />
           ) : (
-            <Text style={styles.loading}>Map available on web only</Text>
+            <WebView
+              originWhitelist={['*']}
+              source={{ html }}
+              style={{ flex: 1 }}
+            />
           )
         ) : (
           <Text style={styles.loading}>Invalid Route Data</Text>
