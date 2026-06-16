@@ -10,19 +10,31 @@ function Navbar() {
         zIndex: 100,
         backgroundColor: '#0f172a',
         color: 'white',
-        padding: '20px 60px',
+
+        padding: '15px 20px',
+
         display: 'flex',
+
         justifyContent: 'space-between',
+
         alignItems: 'center',
+
+        flexWrap: 'wrap',
+
+        gap: '20px',
       }}
     >
-      {/* Logo */}
+      {/* LOGO SECTION */}
 
       <div
         style={{
           display: 'flex',
+
           alignItems: 'center',
-          gap: '10px',
+
+          gap: '12px',
+
+          flexWrap: 'wrap',
         }}
       >
         <FaBus size={30} color="#22c55e" />
@@ -30,36 +42,65 @@ function Navbar() {
         <div
           style={{
             display: 'flex',
+
             alignItems: 'center',
-            gap: '15px',
+
+            gap: '10px',
+
+            flexWrap: 'wrap',
           }}
         >
           <img
             src="/images/logo.png"
             alt="logo"
             style={{
-              width: '50px',
+              width: '45px',
+
+              height: '45px',
+
+              objectFit: 'contain',
             }}
           />
 
-          <h1>BusTrack Smart</h1>
+          <h1
+            style={{
+              margin: 0,
+
+              fontSize: 'clamp(26px, 5vw, 42px)',
+
+              lineHeight: 1.1,
+
+              wordBreak: 'break-word',
+            }}
+          >
+            BusTrack Smart
+          </h1>
         </div>
       </div>
 
-      {/* Menu */}
+      {/* MENU */}
 
       <div
         style={{
           display: 'flex',
-          gap: '30px',
-          fontSize: '18px',
+
+          gap: '20px',
+
+          fontSize: '16px',
+
+          flexWrap: 'wrap',
+
+          justifyContent: 'center',
         }}
       >
         <a
           href="/"
           style={{
             color: 'white',
+
             textDecoration: 'none',
+
+            fontWeight: '500',
           }}
         >
           Home
@@ -69,7 +110,10 @@ function Navbar() {
           href="#features"
           style={{
             color: 'white',
+
             textDecoration: 'none',
+
+            fontWeight: '500',
           }}
         >
           Features
@@ -79,28 +123,15 @@ function Navbar() {
           href="#about"
           style={{
             color: 'white',
+
             textDecoration: 'none',
+
+            fontWeight: '500',
           }}
         >
           About
         </a>
       </div>
-
-      {/* Button */}
-
-      <button
-        style={{
-          backgroundColor: '#22c55e',
-          color: 'white',
-          border: 'none',
-          padding: '12px 20px',
-          borderRadius: '10px',
-          fontSize: '16px',
-          cursor: 'pointer',
-        }}
-      >
-        Download App
-      </button>
     </nav>
   );
 }

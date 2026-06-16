@@ -52,7 +52,7 @@ function Hero() {
         </div>
 
         <button
-          onClick={() => window.open('https://play.google.com', '_blank')}
+          onClick={() => window.open('exp://172.18.211.186:8081')}
           style={{
             backgroundColor: '#10b981',
             color: 'white',

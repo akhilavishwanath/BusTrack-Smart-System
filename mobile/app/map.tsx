@@ -2,7 +2,16 @@
 
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+
+import {
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+
+import { WebView } from 'react-native-webview';
 
 import { getFullRoute } from '../services/api';
 
@@ -48,11 +57,8 @@ export default function MapScreen() {
 
           setStops(cleanStops);
 
-          // INVALID ROUTE
-
           if (cleanStops.length < 2) {
             setHtml('');
-
             return;
           }
 
@@ -69,7 +75,6 @@ export default function MapScreen() {
 
           const generatedHtml = `
           <!DOCTYPE html>
-
           <html>
 
           <head>
@@ -91,6 +96,7 @@ export default function MapScreen() {
 
                 height: 100%;
                 margin: 0;
+                background: #020617;
 
               }
 
@@ -275,7 +281,10 @@ export default function MapScreen() {
     <View style={styles.container}>
       {/* BACK BUTTON */}
 
-      <Pressable style={styles.backButton} onPress={() => router.back()}>
+      <Pressable
+        style={styles.backButton}
+        onPress={() => router.back()}
+      >
         <Text style={styles.backText}>← Back</Text>
       </Pressable>
 
@@ -286,7 +295,9 @@ export default function MapScreen() {
 
         <Text style={styles.routeName}>
           {stops.length > 0
-            ? `${stops[0].stop.toUpperCase()} TO ${stops[stops.length - 1].stop.toUpperCase()} Live Tracking`
+            ? `${stops[0].stop.toUpperCase()} TO ${stops[
+                stops.length - 1
+              ].stop.toUpperCase()} Live Tracking`
             : 'LIVE TRACKING'}
         </Text>
       </View>
@@ -306,10 +317,16 @@ export default function MapScreen() {
               title="Bus Map"
             />
           ) : (
-            <Text style={styles.loading}>Map available on web only</Text>
+            <WebView
+              originWhitelist={['*']}
+              source={{ html }}
+              style={{ flex: 1 }}
+            />
           )
         ) : (
-          <Text style={styles.loading}>Invalid Route Data</Text>
+          <Text style={styles.loading}>
+            Invalid Route Data
+          </Text>
         )}
       </View>
 
@@ -318,11 +335,15 @@ export default function MapScreen() {
       <View style={styles.infoBox}>
         <Text style={styles.label}>📍 Current Stop</Text>
 
-        <Text style={styles.value}>{currentStop?.stop || 'Loading'}</Text>
+        <Text style={styles.value}>
+          {currentStop?.stop || 'Loading'}
+        </Text>
 
         <Text style={styles.label}>➡ Next Stop</Text>
 
-        <Text style={styles.value}>{nextStop?.stop || 'Loading'}</Text>
+        <Text style={styles.value}>
+          {nextStop?.stop || 'Loading'}
+        </Text>
 
         <Text style={styles.label}>👥 Crowd Prediction</Text>
 

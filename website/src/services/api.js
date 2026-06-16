@@ -6,18 +6,8 @@ export async function getDashboard() {
 }
 
 export async function getRoutes() {
-  try {
-    const response = await fetch(`${API_URL}/routes`);
-
-    const data = await response.json();
-
-    console.log('ROUTES DATA:', data);
-
-    return data;
-  } catch (error) {
-    console.log('ROUTES ERROR:', error);
-    return [];
-  }
+  const response = await fetch(`${API_URL}/routes`);
+  return response.json();
 }
 
 export async function getFullRoute(busNumber) {
