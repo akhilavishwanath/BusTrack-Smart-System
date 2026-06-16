@@ -11,7 +11,6 @@ import Navbar from '../components/Navbar';
 import Screenshots from '../components/Screenshots';
 import Stats from '../components/Stats';
 import Testimonials from '../components/Testimonials';
-import React from 'react';
 
 function Home() {
   return (

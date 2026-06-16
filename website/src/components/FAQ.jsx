@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import React from 'react';
 function FAQ() {
   return (
     <motion.div

@@ -1,5 +1,4 @@
 import { FaBus } from 'react-icons/fa';
-import React from 'react';
 
 function Navbar() {
   return (
