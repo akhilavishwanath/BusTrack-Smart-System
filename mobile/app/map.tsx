@@ -13,13 +13,7 @@ import { WebView } from 'react-native-webview';
 
 import { getFullRoute } from '../services/api';
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      iframe: any;
-    }
-  }
-}
+const IframeComponent: any = 'iframe';
 
 export default function MapScreen() {
   const { bus } = useLocalSearchParams();
@@ -305,7 +299,7 @@ export default function MapScreen() {
       <View style={styles.mapContainer}>
         {html ? (
           Platform.OS === 'web' ? (
-            <iframe
+            <IframeComponent
               srcDoc={html}
               style={{
                 width: '100%',
