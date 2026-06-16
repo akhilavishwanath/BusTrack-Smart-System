@@ -11,9 +11,7 @@ export async function getRoutes() {
 }
 
 export async function getFullRoute(busNumber) {
-  const response = await fetch(
-    `${API_URL}/fullroute/${busNumber}`
-  );
+  const response = await fetch(`${API_URL}/fullroute/${busNumber}`);
 
   return response.json();
 }

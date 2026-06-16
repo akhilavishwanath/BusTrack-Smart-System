@@ -1,13 +1,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 
-import {
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { WebView } from 'react-native-webview';
 
@@ -273,10 +267,7 @@ export default function MapScreen() {
     <View style={styles.container}>
       {/* BACK BUTTON */}
 
-      <Pressable
-        style={styles.backButton}
-        onPress={() => router.back()}
-      >
+      <Pressable style={styles.backButton} onPress={() => router.back()}>
         <Text style={styles.backText}>← Back</Text>
       </Pressable>
 
@@ -316,9 +307,7 @@ export default function MapScreen() {
             />
           )
         ) : (
-          <Text style={styles.loading}>
-            Invalid Route Data
-          </Text>
+          <Text style={styles.loading}>Invalid Route Data</Text>
         )}
       </View>
 
@@ -327,15 +316,11 @@ export default function MapScreen() {
       <View style={styles.infoBox}>
         <Text style={styles.label}>📍 Current Stop</Text>
 
-        <Text style={styles.value}>
-          {currentStop?.stop || 'Loading'}
-        </Text>
+        <Text style={styles.value}>{currentStop?.stop || 'Loading'}</Text>
 
         <Text style={styles.label}>➡ Next Stop</Text>
 
-        <Text style={styles.value}>
-          {nextStop?.stop || 'Loading'}
-        </Text>
+        <Text style={styles.value}>{nextStop?.stop || 'Loading'}</Text>
 
         <Text style={styles.label}>👥 Crowd Prediction</Text>
 
