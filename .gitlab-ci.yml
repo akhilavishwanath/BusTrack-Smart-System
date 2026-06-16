@@ -24,6 +24,7 @@ typecheck-job:
   image: node:20
   script:
     - npm install
+    - echo "Type checking skipped for Expo JS project"
     - npx knip || true
 
 test-job:
