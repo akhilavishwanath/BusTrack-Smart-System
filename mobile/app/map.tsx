@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 
