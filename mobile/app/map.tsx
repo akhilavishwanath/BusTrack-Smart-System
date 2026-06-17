@@ -24,8 +24,13 @@ export default function MapScreen() {
     if (!bus) return;
 
     getFullRoute(bus as string)
-      .then((data) => {
-        try {
+       .then((data) => {
+
+    console.log('BUS:', bus);
+    console.log('DATA:', data);
+    console.log('STOPS:', data.stops);
+
+       try {  
           const cleanStops = (data.stops || []).filter((s: any) => {
             const lat = Number(s.latitude);
 
@@ -164,7 +169,7 @@ export default function MapScreen() {
 
                   });
 
-                let currentIndex = 0;
+                  let currentIndex = 0;
 
                 const marker =
                   L.marker(
@@ -219,6 +224,7 @@ export default function MapScreen() {
           setHtml('');
         }
       })
+    
 
       .catch((err) => {
         console.log('FETCH ERROR', err);
@@ -247,21 +253,17 @@ export default function MapScreen() {
 
   const nextStop = stops[(currentIndex + 1) % stops.length];
 
-  // CROWD
+  // CROWD FROM API
 
-  const crowds = ['Low', 'Medium', 'High'];
+const crowd = currentStop?.crowd || 'Medium';
 
-  const crowd = crowds[currentIndex % crowds.length];
+// TRAFFIC
 
-  // TRAFFIC
+const traffic = 'Moderate';
 
-  const trafficList = ['Low', 'Moderate', 'High'];
+// ETA FROM API
 
-  const traffic = trafficList[currentIndex % trafficList.length];
-
-  // ETA
-
-  const eta = 5 + currentIndex * 2;
+const eta = currentStop?.etaMinutes || 5;
 
   return (
     <View style={styles.container}>
