@@ -51,7 +51,7 @@ function Hero() {
         </div>
 
         <button
-          onClick={() => window.open('exp://172.18.211.186:8081')}
+          onClick={() => window.open('https://bus-track-smart-system.vercel.app')}
           style={{
             backgroundColor: '#10b981',
             color: 'white',

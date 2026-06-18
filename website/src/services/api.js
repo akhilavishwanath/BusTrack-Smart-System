@@ -1,4 +1,6 @@
-const API_URL = 'http://172.18.211.186:3000';
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  'https://bustrack-smart-system.onrender.com';
 
 export async function getDashboard() {
   const response = await fetch(`${API_URL}/dashboard`);
