@@ -179,7 +179,7 @@ The Android application provides:
 
 # 🏗️ System Architecture
 
-
+```text
 Website / Mobile App
           ↓
       Backend API
@@ -189,10 +189,11 @@ Website / Mobile App
    Prediction Engine
           ↓
  Tracking & Analytics
+```
 
 # 📂 Project Structure
 
-
+```text
 BusTrack-Smart-System/
 │
 ├── backend/
@@ -206,7 +207,7 @@ BusTrack-Smart-System/
 ├── USER_MANUAL.md
 ├── CHANGELOG.md
 └── LICENSE
-
+```
 
 # ⚡ Installation Guide
 
