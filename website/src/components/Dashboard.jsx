@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  'https://bustrack-smart-system.onrender.com';
 
 function Dashboard() {
   const [dashboard, setDashboard] = useState(null);
