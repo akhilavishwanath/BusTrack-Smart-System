@@ -54,48 +54,46 @@ function Hero() {
           <p>📍 Smart Route Search</p>
           <p>👥 Crowd Prediction</p>
           <p>⏱ ETA Prediction</p>
+
+          <div
+            style={{
+              marginTop: '20px',
+              padding: '15px',
+              background: '#0f172a',
+              borderRadius: '12px',
+              border: '1px solid #334155',
+              color: '#cbd5e1',
+              fontSize: isMobile ? '14px' : '16px',
+              lineHeight: '1.7',
+            }}
+          >
+            📱 <strong>Full Live Tracking Experience Available in Android App</strong>
+            <br />
+            Download the Android application to access:
+            <br />
+            ✅ Real-time GPS Tracking
+            <br />
+            ✅ AI Chatbot
+            <br />
+            ✅ Smart Route Navigation
+            <br />
+            ✅ Live Crowd Prediction
+            <br />
+            ✅ Personalized Travel Assistance
+          </div>
         </div>
 
-        {/* Buttons */}
+        {/* Download Button */}
 
         <div
           style={{
-            display: 'flex',
-            flexDirection: isMobile ? 'column' : 'row',
-            gap: '15px',
             marginTop: '25px',
-            justifyContent: isMobile ? 'center' : 'flex-start',
           }}
         >
-          {/* Start Tracking */}
-
           <button
             onClick={() =>
               window.open(
-                'https://bus-track-smart-system.vercel.app',
-                '_blank'
-              )
-            }
-            style={{
-              backgroundColor: '#2563eb',
-              color: 'white',
-              border: 'none',
-              padding: isMobile ? '15px 25px' : '18px 35px',
-              borderRadius: '15px',
-              fontSize: isMobile ? '18px' : '20px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-            }}
-          >
-            🚍 Start Tracking
-          </button>
-
-          {/* Download Android App */}
-
-          <button
-            onClick={() =>
-              window.open(
-                'https://github.com/akhilavishwanath/BusTrack-Smart-System/releases/download/v1.0.0/application-a4ac17f7-bfb6-4427-8d80-d0ff685a2a9b.apk.zip',
+                'https://github.com/akhilavishwanath/BusTrack-Smart-System/releases/download/v1.0.0/application-a4ac17f7-bfb6-4427-8d80-d0ff685a2a9b.apk',
                 '_blank'
               )
             }
@@ -108,6 +106,7 @@ function Hero() {
               fontSize: isMobile ? '18px' : '20px',
               cursor: 'pointer',
               fontWeight: 'bold',
+              width: isMobile ? '100%' : 'auto',
             }}
           >
             📱 Download Android App
