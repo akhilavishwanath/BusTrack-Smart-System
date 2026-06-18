@@ -57,19 +57,25 @@ function Hero() {
         </div>
 
         <button
-          style={{
-            backgroundColor: '#10b981',
-            color: 'white',
-            border: 'none',
-            padding: isMobile ? '15px 25px' : '18px 35px',
-            borderRadius: '15px',
-            fontSize: isMobile ? '18px' : '20px',
-            cursor: 'pointer',
-            marginTop: '25px',
-          }}
-        >
-          📥 Download App
-        </button>
+          onClick={() =>
+          window.open(
+          'https://expo.dev/accounts/akhila56/projects/mobile/builds/a4ac17f7-bfb6-4427-8d80-d0ff685a2a9b',
+          '_blank'
+        )
+      }
+      style={{
+        backgroundColor: '#10b981',
+        color: 'white',
+        border: 'none',
+        padding: isMobile ? '15px 25px' : '18px 35px',
+        borderRadius: '15px',
+       fontSize: isMobile ? '18px' : '20px',
+       cursor: 'pointer',
+       marginTop: '25px',
+      }}
+>
+  📥 Download App
+</button>
       </div>
 
       {/* Right Side */}
