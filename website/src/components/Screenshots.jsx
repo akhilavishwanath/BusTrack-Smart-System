@@ -25,22 +25,22 @@ function Screenshots() {
         }}
       >
         <div style={cardStyle}>
-          <img src="/images/home.png" alt="Home" style={imageStyle} />
+          <img src="/images/home.jpeg" alt="Home" style={imageStyle} />
           <h2>Home Screen</h2>
         </div>
 
         <div style={cardStyle}>
-          <img src="/images/tracking.png" alt="Tracking" style={imageStyle} />
+          <img src="/images/tracking.jpeg" alt="Tracking" style={imageStyle} />
           <h2>Live Tracking</h2>
         </div>
 
         <div style={cardStyle}>
-          <img src="/images/route.png" alt="Route" style={imageStyle} />
-          <h2>Route Search</h2>
+          <img src="/images/route.jpeg" alt="Route" style={imageStyle} />
+          <h2>AI Chatbot</h2>
         </div>
 
         <div style={cardStyle}>
-          <img src="/images/crowd.png" alt="Crowd" style={imageStyle} />
+          <img src="/images/crowd.jpeg" alt="Crowd" style={imageStyle} />
           <h2>Crowd Prediction</h2>
         </div>
       </div>
