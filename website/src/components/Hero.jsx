@@ -56,26 +56,63 @@ function Hero() {
           <p>⏱ ETA Prediction</p>
         </div>
 
-        <button
-          onClick={() =>
-          window.open(
-          'https://expo.dev/accounts/akhila56/projects/mobile/builds/a4ac17f7-bfb6-4427-8d80-d0ff685a2a9b',
-          '_blank'
-        )
-      }
-      style={{
-        backgroundColor: '#10b981',
-        color: 'white',
-        border: 'none',
-        padding: isMobile ? '15px 25px' : '18px 35px',
-        borderRadius: '15px',
-       fontSize: isMobile ? '18px' : '20px',
-       cursor: 'pointer',
-       marginTop: '25px',
-      }}
->
-  📥 Download App
-</button>
+        {/* Buttons */}
+
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: isMobile ? 'column' : 'row',
+            gap: '15px',
+            marginTop: '25px',
+            justifyContent: isMobile ? 'center' : 'flex-start',
+          }}
+        >
+          {/* Start Tracking */}
+
+          <button
+            onClick={() =>
+              window.open(
+                'https://bus-track-smart-system.vercel.app',
+                '_blank'
+              )
+            }
+            style={{
+              backgroundColor: '#2563eb',
+              color: 'white',
+              border: 'none',
+              padding: isMobile ? '15px 25px' : '18px 35px',
+              borderRadius: '15px',
+              fontSize: isMobile ? '18px' : '20px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+            }}
+          >
+            🚍 Start Tracking
+          </button>
+
+          {/* Download Android App */}
+
+          <button
+            onClick={() =>
+              window.open(
+                'https://github.com/akhilavishwanath/BusTrack-Smart-System/releases/download/v1.0.0/application-a4ac17f7-bfb6-4427-8d80-d0ff685a2a9b.apk.zip',
+                '_blank'
+              )
+            }
+            style={{
+              backgroundColor: '#10b981',
+              color: 'white',
+              border: 'none',
+              padding: isMobile ? '15px 25px' : '18px 35px',
+              borderRadius: '15px',
+              fontSize: isMobile ? '18px' : '20px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+            }}
+          >
+            📱 Download Android App
+          </button>
+        </div>
       </div>
 
       {/* Right Side */}
